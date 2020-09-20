@@ -26,10 +26,14 @@ public class DbConnection {
     private static String tableName = "libuser";
     private static Connection conn = null;
     private static PreparedStatement stmt = null;
+    
+    public static Connection getConnection() throws SQLException {
+       return DriverManager.getConnection(dbURL, "libadmin", "admin");
+    }
 
     
      public static String Login(String userName, String password) throws SQLException {
-       conn = DriverManager.getConnection(dbURL, "libadmin", "admin");
+       conn = getConnection();
        
        if( conn != null ) {
            stmt = conn.prepareStatement("select * from libuser where USERNAME = ? AND PASSWORD = ?");

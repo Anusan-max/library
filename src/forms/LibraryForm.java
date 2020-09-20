@@ -5,14 +5,26 @@
  */
 package forms;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import model.Item;
+import model.Language;
+import model.RentType;
+import model.User;
+import service.ItemService;
+import service.UserService;
 
 /**
  *
  * @author kailainathan
  */
 public class LibraryForm extends javax.swing.JFrame {
+    
+    // declare services
+    public final ItemService itemService;
+    public final UserService userService;
 
     /**
      * Creates new form LibraryForm
@@ -20,6 +32,11 @@ public class LibraryForm extends javax.swing.JFrame {
     public LibraryForm() {
         initComponents();
         closeAllWindows();
+        
+        // create service objects
+        itemService = new ItemService();
+        userService = new UserService();
+        
     }
 
     /**
@@ -40,21 +57,33 @@ public class LibraryForm extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         addItemWindow = new javax.swing.JInternalFrame();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        addItemBtn = new javax.swing.JButton();
+        title = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        jTextField9 = new javax.swing.JTextField();
+        code = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        jTextField10 = new javax.swing.JTextField();
+        author = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        publishedDate = new com.toedter.calendar.JDateChooser();
         jLabel15 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        type = new javax.swing.JComboBox<>();
         jLabel16 = new javax.swing.JLabel();
-        jComboBox4 = new javax.swing.JComboBox<>();
+        language = new javax.swing.JComboBox<>();
+        jLabel18 = new javax.swing.JLabel();
+        publisher = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        isbn = new javax.swing.JTextField();
+        noOfCopiesToBorrow = new javax.swing.JTextField();
+        jPanel1 = new javax.swing.JPanel();
+        findMemberWindow = new javax.swing.JInternalFrame();
+        jLabel17 = new javax.swing.JLabel();
+        selectMemberBy = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jButton3 = new javax.swing.JButton();
+        txtFindMember = new javax.swing.JTextField();
         findItemWindow = new javax.swing.JInternalFrame();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -62,26 +91,24 @@ public class LibraryForm extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
+        findByVal = new javax.swing.JTextField();
+        txtAuthor = new javax.swing.JTextField();
+        txtPublisher = new javax.swing.JTextField();
+        txtIsbn = new javax.swing.JTextField();
+        cbType = new javax.swing.JComboBox<>();
+        cbLan = new javax.swing.JComboBox<>();
+        txtAvailable = new javax.swing.JTextField();
+        txtCurrent = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
-        jTextField11 = new javax.swing.JTextField();
-        jPanel1 = new javax.swing.JPanel();
-        findMemberWindow = new javax.swing.JInternalFrame();
-        jLabel17 = new javax.swing.JLabel();
-        jComboBox5 = new javax.swing.JComboBox<>();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
+        txtDate = new javax.swing.JTextField();
+        lFindBy = new javax.swing.JLabel();
+        findByType = new javax.swing.JComboBox<>();
+        jTitle = new javax.swing.JLabel();
+        txtTitle = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtId = new javax.swing.JTextField();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         addItem = new javax.swing.JMenuItem();
@@ -121,6 +148,7 @@ public class LibraryForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Library Window");
+        setBackground(new java.awt.Color(153, 153, 153));
 
         addItemWindow.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         addItemWindow.setClosable(true);
@@ -131,7 +159,12 @@ public class LibraryForm extends javax.swing.JFrame {
 
         jLabel1.setText("Title");
 
-        jButton1.setText("Add Item");
+        addItemBtn.setText("Add Item");
+        addItemBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addItemBtnActionPerformed(evt);
+            }
+        });
 
         jLabel12.setText("Code");
 
@@ -141,11 +174,22 @@ public class LibraryForm extends javax.swing.JFrame {
 
         jLabel15.setText("Type");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Borrow", "Reference", " " }));
+        type.setModel(new DefaultComboBoxModel(RentType.values()));
+        type.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                typeActionPerformed(evt);
+            }
+        });
 
         jLabel16.setText("Language");
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "English", "Sinhala", "Tamil" }));
+        language.setModel(new DefaultComboBoxModel(Language.values()));
+
+        jLabel18.setText("Publisher");
+
+        jLabel19.setText("ISBN");
+
+        jLabel20.setText("No of copies available to borrow");
 
         javax.swing.GroupLayout addItemWindowLayout = new javax.swing.GroupLayout(addItemWindow.getContentPane());
         addItemWindow.getContentPane().setLayout(addItemWindowLayout);
@@ -158,19 +202,26 @@ public class LibraryForm extends javax.swing.JFrame {
                     .addComponent(jLabel12)
                     .addComponent(jLabel13)
                     .addComponent(jLabel14)
+                    .addComponent(jLabel18)
+                    .addComponent(jLabel16)
+                    .addComponent(jLabel19)
                     .addComponent(jLabel15)
-                    .addComponent(jLabel16))
-                .addGap(93, 93, 93)
+                    .addComponent(jLabel20))
+                .addGap(135, 135, 135)
                 .addGroup(addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
+                    .addComponent(addItemBtn)
                     .addGroup(addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jComboBox4, javax.swing.GroupLayout.Alignment.LEADING, 0, 72, Short.MAX_VALUE)
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.Alignment.LEADING, 0, 0, Short.MAX_VALUE)
-                        .addComponent(jDateChooser2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(jTextField10, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jTextField9, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)))
-                .addContainerGap(272, Short.MAX_VALUE))
+                        .addComponent(isbn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
+                        .addComponent(publishedDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(noOfCopiesToBorrow, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(publisher, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(language, javax.swing.GroupLayout.Alignment.LEADING, 0, 72, Short.MAX_VALUE)
+                        .addComponent(type, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(author, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(code, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(title, javax.swing.GroupLayout.Alignment.LEADING)))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         addItemWindowLayout.setVerticalGroup(
             addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,187 +229,43 @@ public class LibraryForm extends javax.swing.JFrame {
                 .addGap(52, 52, 52)
                 .addGroup(addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24)
                 .addGroup(addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
-                .addGroup(addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel14)
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(addItemWindowLayout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(jLabel15))
-                    .addGroup(addItemWindowLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(author, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(88, 88, 88))
-        );
-
-        findItemWindow.setTitle("Find Item");
-        findItemWindow.setVisible(true);
-
-        jLabel2.setText("Title");
-
-        jLabel3.setText("Code");
-
-        jLabel4.setText("Author");
-
-        jLabel5.setText("Published Dtae");
-
-        jLabel6.setText("ISBN");
-
-        jLabel7.setText("Publisher");
-
-        jLabel9.setText("No of copies available to borrow");
-
-        jLabel10.setText("No of copies currently borrowed");
-
-        jLabel11.setText("Language");
-
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
-            }
-        });
-
-        jTextField4.setEditable(false);
-
-        jTextField5.setEditable(false);
-
-        jTextField6.setEditable(false);
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Borrow", "Reference\t", " " }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "English", "Sinhala", "Tamil", " " }));
-
-        jTextField7.setEditable(false);
-
-        jTextField8.setEditable(false);
-
-        jLabel8.setText("Type");
-
-        jButton2.setLabel("Find Item");
-
-        jTextField11.setEditable(false);
-
-        javax.swing.GroupLayout findItemWindowLayout = new javax.swing.GroupLayout(findItemWindow.getContentPane());
-        findItemWindow.getContentPane().setLayout(findItemWindowLayout);
-        findItemWindowLayout.setHorizontalGroup(
-            findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(findItemWindowLayout.createSequentialGroup()
-                .addGap(88, 88, 88)
-                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(findItemWindowLayout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(findItemWindowLayout.createSequentialGroup()
-                        .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel5))
-                        .addGap(71, 71, 71)
-                        .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField8)
-                            .addComponent(jTextField7)
-                            .addComponent(jComboBox1, 0, 86, Short.MAX_VALUE)
-                            .addComponent(jTextField5)
-                            .addComponent(jTextField6)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField4)
-                            .addComponent(jTextField11))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addGap(41, 41, 41))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, findItemWindowLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSeparator1))
-        );
-        findItemWindowLayout.setVerticalGroup(
-            findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(findItemWindowLayout.createSequentialGroup()
-                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(findItemWindowLayout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(findItemWindowLayout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel3))
-                    .addGroup(findItemWindowLayout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(jButton2)))
-                .addGap(17, 17, 17)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
-                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(findItemWindowLayout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addComponent(jLabel4)))
-                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(findItemWindowLayout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(jLabel5))
-                    .addGroup(findItemWindowLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel18)
+                    .addComponent(publisher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel14)
+                    .addComponent(publishedDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20)
-                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
+                .addGroup(addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(isbn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel19))
                 .addGap(18, 18, 18)
-                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(138, Short.MAX_VALUE))
+                .addGroup(addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(noOfCopiesToBorrow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel20))
+                .addGap(12, 12, 12)
+                .addGroup(addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(language, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel16))
+                .addGap(47, 47, 47)
+                .addComponent(addItemBtn)
+                .addContainerGap(254, Short.MAX_VALUE))
         );
-
-        jButton2.getAccessibleContext().setAccessibleName("find");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -376,9 +283,9 @@ public class LibraryForm extends javax.swing.JFrame {
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("Find member"), findMemberWindow, org.jdesktop.beansbinding.BeanProperty.create("title"));
         bindingGroup.addBinding(binding);
 
-        jLabel17.setText("By");
+        jLabel17.setText("Find By");
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Id", "Type" }));
+        selectMemberBy.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Id", "Type" }));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -401,40 +308,241 @@ public class LibraryForm extends javax.swing.JFrame {
         jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         jButton3.setText("Find");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout findMemberWindowLayout = new javax.swing.GroupLayout(findMemberWindow.getContentPane());
         findMemberWindow.getContentPane().setLayout(findMemberWindowLayout);
         findMemberWindowLayout.setHorizontalGroup(
             findMemberWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(findMemberWindowLayout.createSequentialGroup()
-                .addGap(55, 55, 55)
-                .addComponent(jLabel17)
-                .addGap(75, 75, 75)
-                .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton3)
-                .addGap(73, 73, 73))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, findMemberWindowLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(55, 55, 55)
+                .addGroup(findMemberWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
+                    .addGroup(findMemberWindowLayout.createSequentialGroup()
+                        .addComponent(jLabel17)
+                        .addGap(75, 75, 75)
+                        .addComponent(selectMemberBy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41)
+                        .addComponent(txtFindMember, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton3)))
+                .addGap(70, 70, 70))
         );
         findMemberWindowLayout.setVerticalGroup(
             findMemberWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(findMemberWindowLayout.createSequentialGroup()
-                .addGroup(findMemberWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(findMemberWindowLayout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addGroup(findMemberWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel17)
-                            .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(findMemberWindowLayout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(jButton3)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 200, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(43, 43, 43)
+                .addGroup(findMemberWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17)
+                    .addComponent(selectMemberBy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFindMember, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3))
+                .addGap(31, 31, 31)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(164, Short.MAX_VALUE))
         );
+
+        jLabel17.getAccessibleContext().setAccessibleName("Find By");
+
+        findItemWindow.setClosable(true);
+        findItemWindow.setMaximizable(true);
+        findItemWindow.setResizable(true);
+        findItemWindow.setTitle("Find Item");
+        findItemWindow.setAutoscrolls(true);
+        findItemWindow.setVisible(true);
+
+        jLabel4.setText("Author");
+
+        jLabel5.setText("Published Date");
+
+        jLabel6.setText("ISBN");
+
+        jLabel7.setText("Publisher");
+
+        jLabel9.setText("No of copies available to borrow");
+
+        jLabel10.setText("No of copies currently borrowed");
+
+        jLabel11.setText("Language");
+
+        findByVal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                findByValActionPerformed(evt);
+            }
+        });
+
+        txtAuthor.setEditable(false);
+
+        txtPublisher.setEditable(false);
+
+        txtIsbn.setEditable(false);
+
+        cbType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "BORROW", "REFERENCE", " " }));
+        cbType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbTypeActionPerformed(evt);
+            }
+        });
+
+        cbLan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ENGLISH", "SINHALA", "TAMIL" }));
+
+        txtAvailable.setEditable(false);
+
+        txtCurrent.setEditable(false);
+
+        jLabel8.setText("Type");
+
+        jButton2.setLabel("Find Item");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        txtDate.setEditable(false);
+
+        lFindBy.setText("Find By");
+
+        findByType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Title", "ID" }));
+        findByType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                findByTypeActionPerformed(evt);
+            }
+        });
+
+        jTitle.setText("Title");
+
+        jLabel2.setText("ID");
+
+        javax.swing.GroupLayout findItemWindowLayout = new javax.swing.GroupLayout(findItemWindow.getContentPane());
+        findItemWindow.getContentPane().setLayout(findItemWindowLayout);
+        findItemWindowLayout.setHorizontalGroup(
+            findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(findItemWindowLayout.createSequentialGroup()
+                .addGap(88, 88, 88)
+                .addComponent(jLabel6)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, findItemWindowLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator1))
+            .addGroup(findItemWindowLayout.createSequentialGroup()
+                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(findItemWindowLayout.createSequentialGroup()
+                        .addGap(88, 88, 88)
+                        .addComponent(jLabel7))
+                    .addGroup(findItemWindowLayout.createSequentialGroup()
+                        .addGap(88, 88, 88)
+                        .addComponent(jLabel10))
+                    .addGroup(findItemWindowLayout.createSequentialGroup()
+                        .addGap(88, 88, 88)
+                        .addComponent(jLabel11))
+                    .addGroup(findItemWindowLayout.createSequentialGroup()
+                        .addGap(88, 88, 88)
+                        .addComponent(jLabel8))
+                    .addGroup(findItemWindowLayout.createSequentialGroup()
+                        .addGap(88, 88, 88)
+                        .addComponent(jLabel9))
+                    .addGroup(findItemWindowLayout.createSequentialGroup()
+                        .addGap(88, 88, 88)
+                        .addComponent(jLabel5))
+                    .addGroup(findItemWindowLayout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addComponent(lFindBy)
+                        .addGap(65, 65, 65)
+                        .addComponent(findByType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(findItemWindowLayout.createSequentialGroup()
+                        .addGap(87, 87, 87)
+                        .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, findItemWindowLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(findByVal, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(61, 61, 61))
+                    .addGroup(findItemWindowLayout.createSequentialGroup()
+                        .addGap(71, 71, 71)
+                        .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
+                            .addComponent(txtTitle)
+                            .addComponent(cbLan, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtCurrent)
+                            .addComponent(txtAvailable)
+                            .addComponent(cbType, 0, 86, Short.MAX_VALUE)
+                            .addComponent(txtPublisher)
+                            .addComponent(txtIsbn)
+                            .addComponent(txtAuthor)
+                            .addComponent(txtDate))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(jButton2)
+                .addGap(41, 41, 41))
+        );
+        findItemWindowLayout.setVerticalGroup(
+            findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(findItemWindowLayout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(findByVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lFindBy)
+                    .addComponent(findByType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTitle)
+                    .addComponent(txtTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(findItemWindowLayout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addComponent(jLabel4)))
+                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(findItemWindowLayout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(jLabel5))
+                    .addGroup(findItemWindowLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(20, 20, 20)
+                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(txtIsbn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(9, 9, 9)
+                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(txtPublisher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cbType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addGap(18, 18, 18)
+                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(txtAvailable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(txtCurrent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(cbLan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(124, Short.MAX_VALUE))
+        );
+
+        jButton2.getAccessibleContext().setAccessibleName("find");
 
         jMenu3.setText("File");
         jMenu3.addActionListener(new java.awt.event.ActionListener() {
@@ -485,27 +593,26 @@ public class LibraryForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(findMemberWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(findItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(addItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(addItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(265, 265, 265)
+                        .addComponent(findItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(findMemberWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(42, 42, 42)
                 .addComponent(addItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(39, 39, 39)
                 .addComponent(findItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(89, 89, 89)
+                .addGap(52, 52, 52)
                 .addComponent(findMemberWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1188, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 3986, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(257, 257, 257))
         );
@@ -531,18 +638,89 @@ public class LibraryForm extends javax.swing.JFrame {
         findItemWindow.setVisible(true);
     }//GEN-LAST:event_findItemActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void cbTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTypeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_cbTypeActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void findByValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findByValActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_findByValActionPerformed
 
     private void findMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findMemberActionPerformed
         closeAllWindows();
         findMemberWindow.setVisible(true);
     }//GEN-LAST:event_findMemberActionPerformed
+
+    private void addItemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addItemBtnActionPerformed
+
+        // creating an object for item  
+        Item item = new Item();        
+        item.setTitle(title.getText());
+        item.setCode(code.getText());
+        item.setAuthor(author.getText());
+        item.setPublisher(publisher.getText());
+        item.setPublishedDate(((JTextField) publishedDate.getDateEditor().getUiComponent()).getText());
+        item.setIsbn(isbn.getText());
+        item.setNoOfCopiesToBorrow(Integer.parseInt(noOfCopiesToBorrow.getText()));
+        item.setRentType((RentType)type.getSelectedItem());
+        item.setLanguage((Language)language.getSelectedItem());
+        itemService.addItem(item);
+    }//GEN-LAST:event_addItemBtnActionPerformed
+
+    private void typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_typeActionPerformed
+
+    private void findByTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findByTypeActionPerformed
+        
+    }//GEN-LAST:event_findByTypeActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+        //get the value from the select box 
+        String selectedFindByType = String.valueOf(findByType.getSelectedItem());
+        
+        //get the value from the textbox 
+        String selectedValue = findByVal.getText();
+        
+        if(selectedFindByType == "Title") {
+        //get item by title
+          Item item =  itemService.findItemByTitle(selectedValue);
+          txtAuthor.setText(item.getAuthor());
+          txtPublisher.setText(item.getPublisher());
+          txtTitle.setText(item.getTitle());
+          txtId.setText(item.getCode());
+          txtIsbn.setText(item.getIsbn());
+          txtDate.setText(item.getPublishedDate());
+          txtAvailable.setText(Integer.toString(item.getNoOfCopiesToBorrow()));
+          txtCurrent.setText(Integer.toString(item.getNoOfCopiesCurrentlyBorrowed()));
+          cbType.setSelectedItem(item.getRentType().toString());
+          cbLan.setSelectedItem(item.getLanguage().toString());  
+        } else {
+        //search by id 
+            System.out.println("this is id");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+       String selectedSelectMemberBy = String.valueOf(selectMemberBy.getSelectedItem());
+       
+       //get the value from the text box 
+       String selectedValue = txtFindMember.getText();
+       
+       // if combobox selected value is id 
+       if(selectedSelectMemberBy == "Id"){
+           
+           // call the findbyid method from memberservice class and pass the selectedValue parameter
+           // declare a member variable called member
+           // get the member from memberService ( findById returns a Member object)
+           // assign returned member object to the member variable 
+           User user =  userService.findById(selectedValue);
+           System.out.println("user ---" + user.getFirstName());
+       } else {
+           
+       }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     
     private void closeAllWindows(){
@@ -587,20 +765,21 @@ public class LibraryForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem addItem;
+    private javax.swing.JButton addItemBtn;
     private javax.swing.JInternalFrame addItemWindow;
+    private javax.swing.JTextField author;
+    private javax.swing.JComboBox<String> cbLan;
+    private javax.swing.JComboBox<String> cbType;
+    private javax.swing.JTextField code;
+    private javax.swing.JComboBox<String> findByType;
+    private javax.swing.JTextField findByVal;
     private javax.swing.JMenuItem findItem;
     private javax.swing.JInternalFrame findItemWindow;
     private javax.swing.JMenuItem findMember;
     private javax.swing.JInternalFrame findMemberWindow;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTextField isbn;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -610,8 +789,10 @@ public class LibraryForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -631,17 +812,24 @@ public class LibraryForm extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
+    private javax.swing.JLabel jTitle;
+    private javax.swing.JLabel lFindBy;
+    private javax.swing.JComboBox<String> language;
+    private javax.swing.JTextField noOfCopiesToBorrow;
+    private com.toedter.calendar.JDateChooser publishedDate;
+    private javax.swing.JTextField publisher;
+    private javax.swing.JComboBox<String> selectMemberBy;
+    private javax.swing.JTextField title;
+    private javax.swing.JTextField txtAuthor;
+    private javax.swing.JTextField txtAvailable;
+    private javax.swing.JTextField txtCurrent;
+    private javax.swing.JTextField txtDate;
+    private javax.swing.JTextField txtFindMember;
+    private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtIsbn;
+    private javax.swing.JTextField txtPublisher;
+    private javax.swing.JTextField txtTitle;
+    private javax.swing.JComboBox<String> type;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }
