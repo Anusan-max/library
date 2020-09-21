@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import model.Item;
 import model.Language;
+import model.LibraryMember;
 import model.RentType;
 import model.User;
 import service.ItemService;
@@ -715,9 +716,13 @@ public class LibraryForm extends javax.swing.JFrame {
            // declare a member variable called member
            // get the member from memberService ( findById returns a Member object)
            // assign returned member object to the member variable 
-           User user =  userService.findById(selectedValue);
-           System.out.println("user ---" + user.getFirstName());
+            LibraryMember member =  userService.findById(selectedValue);
+            System.out.println("user ---" + member.getName());
+            System.out.println("user ---" + member.getContactNo());
+            System.out.println("user ---" + member.getMemberStatus());
+            System.out.println("user ---" + member.getMemberType());
        } else {
+           LibraryMember member =  userService.findById(selectedValue);
            
        }
     }//GEN-LAST:event_jButton3ActionPerformed

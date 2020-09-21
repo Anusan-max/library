@@ -7,6 +7,7 @@ package service;
 
 import dao.UserDao;
 import model.Item;
+import model.LibraryMember;
 import model.User;
 
 /**
@@ -23,7 +24,11 @@ public class UserService {
 
     // findById method needs a string as a parameter 
     // return a member object
-    public User findById(String id) {
+    public LibraryMember findById(String id) {
+        return userDao.findById(id);
+    }
+    
+     public LibraryMember findByType(String id) {
         return userDao.findById(id);
     }
 

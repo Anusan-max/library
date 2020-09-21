@@ -13,11 +13,11 @@ import java.time.LocalDate;
  */
 public class User {
     String userId;
-    String firstName;
+    String name;
     String userName;
     String password;
     UserRole userRole;
-    String dob;
+   
 
     public String getUserId() {
         return userId;
@@ -27,12 +27,11 @@ public class User {
         this.userId = userId;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
+    public String getName() {
+        return name; }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUserName() {
@@ -59,13 +58,5 @@ public class User {
         this.userRole = userRole;
     }
 
-    public String getDob() {
-        return dob;
-    }
-
-    public void setDob(String dob) {
-        this.dob = dob;
-    }
- 
     
 }

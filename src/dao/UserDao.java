@@ -14,9 +14,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Item;
 import model.Language;
+import model.LibraryMember;
 import model.RentType;
 import model.User;
 import model.UserRole;
+import model.MemberStatus;
 
 /**
  *
@@ -26,9 +28,10 @@ public class UserDao {
 
       private static PreparedStatement stmt = null;
       private Connection conn = null;
+      
     
 
-    public User findById(String id) {
+    public LibraryMember findById(String id) {
         try {
               conn = DbConnection.getConnection();
           } catch (SQLException ex) {
@@ -51,15 +54,61 @@ public class UserDao {
                       //no user so return
                       return null;
                   } else {
-                    User user = new User();
-                    rs.first();
-                    user.setUserId(rs.getString("ID"));
-                    user.setFirstName(rs.getString("FIRSTNAME"));
-                    user.setUserName(rs.getString("USERNAME"));
-                    user.setUserRole(UserRole.valueOf(rs.getString("UROLE")));
-                    user.setDob(rs.getString("DATEOFBIRTH"));
+                    if(UserRole.valueOf(rs.getString("UROLE")) == UserRole.MEMBER) {
+                        LibraryMember member = new LibraryMember();
+                        member.setName(rs.getString("NAME"));
+                        member.setContactNo(rs.getString("CONTACTNO"));
+                        member.setMemberStatus(MemberStatus.valueOf(rs.getString("STATUS")));
+                        member.setAddress(rs.getString("ADDRESS"));
+                        member.setDob(rs.getString("DATEOFBIRTH"));
+                        System.out.println("Member is " + member);
+                    return member;
                     
-                    return user;
+                  }
+                    
+                  }
+              } catch (SQLException ex) {
+                  Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
+              }
+       }
+       return null;
+    }
+    
+    
+      public LibraryMember findByType(String type) {
+        try {
+              conn = DbConnection.getConnection();
+          } catch (SQLException ex) {
+              Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
+          }
+        if( conn != null ) {
+              try {
+                  //preparing the statement
+                  stmt = conn.prepareStatement("select * from LIBUSER where ID = ?",ResultSet.TYPE_SCROLL_INSENSITIVE,
+                                        ResultSet.CONCUR_UPDATABLE);
+                  
+                  //setting the value for the question mark
+                  stmt.setString(1, type);
+                  
+                  //executing the statement and it will return a resultset
+                  ResultSet rs = stmt.executeQuery();
+
+                  //if no results found 
+                  if (!rs.next()) {
+                      //no user so return
+                      return null;
+                  } else {
+                    if(UserRole.valueOf(rs.getString("UROLE")) == UserRole.MEMBER) {
+                        LibraryMember member = new LibraryMember();
+                        member.setName(rs.getString("NAME"));
+                        member.setContactNo(rs.getString("CONTACTNO"));
+                        member.setMemberStatus(MemberStatus.valueOf(rs.getString("STATUS")));
+                        member.setAddress(rs.getString("ADDRESS"));
+                        member.setDob(rs.getString("DATEOFBIRTH"));
+                        System.out.println("Member is " + member);
+                    return member;
+                    
+                  }
                     
                   }
               } catch (SQLException ex) {
