@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Item;
@@ -19,6 +21,7 @@ import model.RentType;
 import model.User;
 import model.UserRole;
 import model.MemberStatus;
+import model.MemberType;
 
 /**
  *
@@ -65,6 +68,7 @@ public class UserDao {
                     return member;
                     
                   }
+                    conn.close();
                     
                   }
               } catch (SQLException ex) {
@@ -75,7 +79,8 @@ public class UserDao {
     }
     
     
-      public LibraryMember findByType(String type) {
+      public ArrayList<LibraryMember> findByType(String type) {
+          ArrayList memberList = new ArrayList();
         try {
               conn = DbConnection.getConnection();
           } catch (SQLException ex) {
@@ -84,37 +89,39 @@ public class UserDao {
         if( conn != null ) {
               try {
                   //preparing the statement
-                  stmt = conn.prepareStatement("select * from LIBUSER where ID = ?",ResultSet.TYPE_SCROLL_INSENSITIVE,
+                  stmt = conn.prepareStatement("select * from LIBUSER",ResultSet.TYPE_SCROLL_INSENSITIVE,
                                         ResultSet.CONCUR_UPDATABLE);
-                  
-                  //setting the value for the question mark
-                  stmt.setString(1, type);
-                  
+                
                   //executing the statement and it will return a resultset
                   ResultSet rs = stmt.executeQuery();
 
                   //if no results found 
-                  if (!rs.next()) {
-                      //no user so return
-                      return null;
-                  } else {
-                    if(UserRole.valueOf(rs.getString("UROLE")) == UserRole.MEMBER) {
+                  while (rs.next()) { 
                         LibraryMember member = new LibraryMember();
                         member.setName(rs.getString("NAME"));
                         member.setContactNo(rs.getString("CONTACTNO"));
                         member.setMemberStatus(MemberStatus.valueOf(rs.getString("STATUS")));
                         member.setAddress(rs.getString("ADDRESS"));
                         member.setDob(rs.getString("DATEOFBIRTH"));
-                        System.out.println("Member is " + member);
-                    return member;
-                    
+                        System.out.println("member.getMemberType() " + member.getMemberType());
+                        System.out.println("type paras" + type);
+                        System.out.println("thisis " + (member.getMemberType().toString() == type));
+                        if(member.getMemberType() == MemberType.valueOf(type)) {
+                             System.out.println(" inside the if  " + member.getMemberType());
+                             memberList.add(member);
+                        }
                   }
-                    
-                  }
+                  System.out.println("memberList " + memberList);
+                  conn.close();
+                  return memberList;
+                  
+               
               } catch (SQLException ex) {
                   Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
               }
+             
        }
+       
        return null;
     }
     

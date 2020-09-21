@@ -50,6 +50,7 @@ public class ItemDao {
                  
                  int i = stmt.executeUpdate();
                  System.out.println("rows added " + i );
+                 conn.close();
              } catch (SQLException ex) {
                  Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
              }
@@ -85,6 +86,7 @@ public class ItemDao {
                     item.setNoOfCopiesToBorrow(rs.getInt("NOOFCOPIESAVAILABLE"));
                     item.setNoOfCopiesCurrentlyBorrowed(rs.getInt("NOOFCOPIESBORROWED"));
                     item.setLanguage(Language.valueOf(rs.getString("LANGUAGE")));
+                    conn.close();
                     return item;
                   }
               } catch (SQLException ex) {

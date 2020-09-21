@@ -5,10 +5,13 @@
  */
 package forms;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import model.Item;
 import model.Language;
 import model.LibraryMember;
@@ -265,7 +268,7 @@ public class LibraryForm extends javax.swing.JFrame {
                     .addComponent(jLabel16))
                 .addGap(47, 47, 47)
                 .addComponent(addItemBtn)
-                .addContainerGap(254, Short.MAX_VALUE))
+                .addContainerGap(262, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -315,6 +318,12 @@ public class LibraryForm extends javax.swing.JFrame {
             }
         });
 
+        txtFindMember.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFindMemberActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout findMemberWindowLayout = new javax.swing.GroupLayout(findMemberWindow.getContentPane());
         findMemberWindow.getContentPane().setLayout(findMemberWindowLayout);
         findMemberWindowLayout.setHorizontalGroup(
@@ -344,10 +353,8 @@ public class LibraryForm extends javax.swing.JFrame {
                     .addComponent(jButton3))
                 .addGap(31, 31, 31)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(164, Short.MAX_VALUE))
+                .addContainerGap(180, Short.MAX_VALUE))
         );
-
-        jLabel17.getAccessibleContext().setAccessibleName("Find By");
 
         findItemWindow.setClosable(true);
         findItemWindow.setMaximizable(true);
@@ -540,7 +547,7 @@ public class LibraryForm extends javax.swing.JFrame {
                 .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(cbLan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(124, Short.MAX_VALUE))
+                .addContainerGap(140, Short.MAX_VALUE))
         );
 
         jButton2.getAccessibleContext().setAccessibleName("find");
@@ -711,21 +718,49 @@ public class LibraryForm extends javax.swing.JFrame {
        
        // if combobox selected value is id 
        if(selectedSelectMemberBy == "Id"){
+           //creating a array list of  LibraryMember
+            ArrayList<LibraryMember> list = new ArrayList<LibraryMember>();
+             // getting the librarymember and adding it to the list 
+             LibraryMember member = userService.findById(selectedValue);
+             
+             if(member != null) {
+                    list.add(member);
+             addToTable(selectedValue,list);
+             } else {
+                 System.out.println("bong");
+             }
            
-           // call the findbyid method from memberservice class and pass the selectedValue parameter
-           // declare a member variable called member
-           // get the member from memberService ( findById returns a Member object)
-           // assign returned member object to the member variable 
-            LibraryMember member =  userService.findById(selectedValue);
-            System.out.println("user ---" + member.getName());
-            System.out.println("user ---" + member.getContactNo());
-            System.out.println("user ---" + member.getMemberStatus());
-            System.out.println("user ---" + member.getMemberType());
        } else {
-           LibraryMember member =  userService.findById(selectedValue);
+           addToTable(selectedValue,userService.findByType(selectedValue));
            
        }
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    
+    
+    private void addToTable(String selectedValue,ArrayList<LibraryMember> list) {
+            DefaultTableModel model =  (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+
+            //creating an array of 5 ( for table rows)
+            Object rowData[] = new Object[5];
+            
+            //loop through the list addig it to the table 
+            for(int i = 0; i < list.size(); i++)
+            {
+                rowData[0] = list.get(i).getName();
+                rowData[1] = list.get(i).getAddress();
+                rowData[2] = list.get(i).getMemberType();
+                rowData[3] = list.get(i).getContactNo();
+                rowData[4] = list.get(i).getMemberStatus();
+                model.addRow(rowData);
+                 
+            }
+    }
+    
+    private void txtFindMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFindMemberActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFindMemberActionPerformed
 
     
     private void closeAllWindows(){

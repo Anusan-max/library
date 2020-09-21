@@ -6,6 +6,8 @@
 package service;
 
 import dao.UserDao;
+import java.util.ArrayList;
+import java.util.List;
 import model.Item;
 import model.LibraryMember;
 import model.User;
@@ -28,8 +30,8 @@ public class UserService {
         return userDao.findById(id);
     }
     
-     public LibraryMember findByType(String id) {
-        return userDao.findById(id);
+     public ArrayList<LibraryMember> findByType(String type) {
+        return userDao.findByType(type);
     }
 
   
