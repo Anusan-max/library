@@ -5,6 +5,12 @@
  */
 package forms;
 
+import java.util.Date;
+import javax.swing.JTextField;
+import model.BorrowItem;
+import service.BorrowItemService;
+import service.ItemService;
+
 /**
  *
  * @author kailainathan
@@ -14,7 +20,12 @@ public class MemberForm extends javax.swing.JFrame {
     /**
      * Creates new form MemberForm
      */
+    public final BorrowItemService borrowItemService;
+    public final ItemService itemService;
+    
     public MemberForm() {
+        borrowItemService = new BorrowItemService();
+        itemService = new ItemService();
         initComponents();
         closeAllWindows();
     }
@@ -33,20 +44,14 @@ public class MemberForm extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        borrowItemWindow = new javax.swing.JInternalFrame();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
         returnItemWindow = new javax.swing.JInternalFrame();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        rItemCodeTxt = new javax.swing.JTextField();
+        rMemberIdTxt = new javax.swing.JTextField();
+        returnDateTxt = new com.toedter.calendar.JDateChooser();
+        jButton3 = new javax.swing.JButton();
         findItemWindow = new javax.swing.JInternalFrame();
         jLabel2 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -70,6 +75,14 @@ public class MemberForm extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jTextField12 = new javax.swing.JTextField();
+        borrowItemWindow = new javax.swing.JInternalFrame();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        itemCodeTxt = new javax.swing.JTextField();
+        memberIdTxt = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        borrowDateTxt = new com.toedter.calendar.JDateChooser();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         returnItem = new javax.swing.JMenuItem();
@@ -125,60 +138,9 @@ public class MemberForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        borrowItemWindow.setVisible(true);
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("Borrow Item"), borrowItemWindow, org.jdesktop.beansbinding.BeanProperty.create("title"));
-        bindingGroup.addBinding(binding);
-
-        jLabel3.setText("Item Code");
-
-        jLabel4.setText("Member Id");
-
-        jLabel5.setText("Borrow Date");
-
-        jTextField1.setText("jTextField1");
-
-        jTextField2.setText("jTextField2");
-
-        javax.swing.GroupLayout borrowItemWindowLayout = new javax.swing.GroupLayout(borrowItemWindow.getContentPane());
-        borrowItemWindow.getContentPane().setLayout(borrowItemWindowLayout);
-        borrowItemWindowLayout.setHorizontalGroup(
-            borrowItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(borrowItemWindowLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(borrowItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
-                .addGap(83, 83, 83)
-                .addGroup(borrowItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(borrowItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 68, Short.MAX_VALUE)
-                        .addComponent(jTextField2)))
-                .addContainerGap(78, Short.MAX_VALUE))
-        );
-        borrowItemWindowLayout.setVerticalGroup(
-            borrowItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(borrowItemWindowLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(borrowItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(borrowItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(borrowItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(304, Short.MAX_VALUE))
-        );
-
         returnItemWindow.setVisible(true);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("Return Item"), returnItemWindow, org.jdesktop.beansbinding.BeanProperty.create("title"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("Return Item"), returnItemWindow, org.jdesktop.beansbinding.BeanProperty.create("title"));
         bindingGroup.addBinding(binding);
 
         jLabel6.setText("Item Code");
@@ -187,9 +149,15 @@ public class MemberForm extends javax.swing.JFrame {
 
         jLabel8.setText("Returned Date");
 
-        jTextField3.setText("jTextField3");
+        returnDateTxt.setDate(new Date());
+        returnDateTxt.setDateFormatString("dd/MM/yyyy");
 
-        jTextField4.setText("jTextField4");
+        jButton3.setText("Return");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout returnItemWindowLayout = new javax.swing.GroupLayout(returnItemWindow.getContentPane());
         returnItemWindow.getContentPane().setLayout(returnItemWindowLayout);
@@ -204,10 +172,12 @@ public class MemberForm extends javax.swing.JFrame {
                     .addComponent(jLabel8))
                 .addGap(71, 71, 71)
                 .addGroup(returnItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(132, Short.MAX_VALUE))
+                    .addGroup(returnItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jButton3)
+                        .addComponent(rItemCodeTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+                        .addComponent(rMemberIdTxt))
+                    .addComponent(returnDateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(103, Short.MAX_VALUE))
         );
         returnItemWindowLayout.setVerticalGroup(
             returnItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -215,16 +185,18 @@ public class MemberForm extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addGroup(returnItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(rItemCodeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(returnItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(rMemberIdTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(returnItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(266, Short.MAX_VALUE))
+                    .addComponent(returnDateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(39, 39, 39)
+                .addComponent(jButton3)
+                .addContainerGap(58, Short.MAX_VALUE))
         );
 
         findItemWindow.setClosable(true);
@@ -378,7 +350,73 @@ public class MemberForm extends javax.swing.JFrame {
                 .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addContainerGap(613, Short.MAX_VALUE))
+        );
+
+        borrowItemWindow.setVisible(true);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("Borrow Item"), borrowItemWindow, org.jdesktop.beansbinding.BeanProperty.create("title"));
+        bindingGroup.addBinding(binding);
+
+        jLabel3.setText("Item Code");
+
+        jLabel4.setText("Member Id");
+
+        jLabel5.setText("Borrow Date");
+
+        itemCodeTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemCodeTxtActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Borrow");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        borrowDateTxt.setDate(new Date());
+        borrowDateTxt.setDateFormatString("dd/MM/yyyy");
+
+        javax.swing.GroupLayout borrowItemWindowLayout = new javax.swing.GroupLayout(borrowItemWindow.getContentPane());
+        borrowItemWindow.getContentPane().setLayout(borrowItemWindowLayout);
+        borrowItemWindowLayout.setHorizontalGroup(
+            borrowItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(borrowItemWindowLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(borrowItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
+                .addGap(83, 83, 83)
+                .addGroup(borrowItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(borrowItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jButton1)
+                        .addComponent(itemCodeTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
+                        .addComponent(memberIdTxt))
+                    .addComponent(borrowDateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(34, Short.MAX_VALUE))
+        );
+        borrowItemWindowLayout.setVerticalGroup(
+            borrowItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(borrowItemWindowLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(borrowItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(itemCodeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(borrowItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(memberIdTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(borrowItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(borrowDateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32)
+                .addComponent(jButton1)
+                .addContainerGap(82, Short.MAX_VALUE))
         );
 
         jMenu1.setText("File");
@@ -422,20 +460,25 @@ public class MemberForm extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(findItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(returnItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(borrowItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(772, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(returnItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(93, 93, 93)
+                        .addComponent(borrowItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(490, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(returnItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(borrowItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(returnItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(268, 268, 268)
+                        .addComponent(borrowItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(2256, 2256, 2256)
                 .addComponent(findItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -465,6 +508,43 @@ public class MemberForm extends javax.swing.JFrame {
        closeAllWindows();
        findItemWindow.setVisible(true);
     }//GEN-LAST:event_findItemActionPerformed
+
+    private void itemCodeTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCodeTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_itemCodeTxtActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String itemCode = itemCodeTxt.getText();
+        String memberId = memberIdTxt.getText();
+        String borrowDate = ((JTextField)borrowDateTxt.getDateEditor().getUiComponent()).getText();
+        
+        BorrowItem borrowItem = new BorrowItem();
+        borrowItem.setItemId(itemCode);
+        borrowItem.setMemberId(memberId);
+        borrowItem.setBorrowDate(borrowDate);
+        
+        String a = borrowItemService.borrowItem(borrowItem);
+        itemService.IncreaseBorrowItemNumberAndDecreaseAvailableItemNumber(itemCode);
+        System.out.println("ding " + a);
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        String itemCode = rItemCodeTxt.getText();
+        String memberId = rMemberIdTxt.getText();
+        String returnDate = ((JTextField)returnDateTxt.getDateEditor().getUiComponent()).getText();
+        
+        BorrowItem borrowItem = new BorrowItem();
+        borrowItem.setItemId(itemCode);
+        borrowItem.setMemberId(memberId);
+        borrowItem.setReturnDate(returnDate);
+        
+        borrowItemService.calculateFineAndReturnItem(borrowItem);
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
 private void closeAllWindows(){
      returnItemWindow.setVisible(false);
      borrowItemWindow.setVisible(false);
@@ -506,15 +586,17 @@ private void closeAllWindows(){
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.toedter.calendar.JDateChooser borrowDateTxt;
     private javax.swing.JMenuItem borrowItem;
     private javax.swing.JInternalFrame borrowItemWindow;
     private javax.swing.JMenuItem findItem;
     private javax.swing.JInternalFrame findItemWindow;
+    private javax.swing.JTextField itemCodeTxt;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JInternalFrame jInternalFrame2;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -539,18 +621,18 @@ private void closeAllWindows(){
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField12;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
+    private javax.swing.JTextField memberIdTxt;
+    private javax.swing.JTextField rItemCodeTxt;
+    private javax.swing.JTextField rMemberIdTxt;
+    private com.toedter.calendar.JDateChooser returnDateTxt;
     private javax.swing.JMenuItem returnItem;
     private javax.swing.JInternalFrame returnItemWindow;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;

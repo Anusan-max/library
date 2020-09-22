@@ -8,6 +8,7 @@ package model;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 /**
  *
@@ -19,6 +20,7 @@ public class LibraryMember extends User{
      String address;
      String contactNo;
      MemberStatus memberStatus;
+     ArrayList<Item> items;
 
     public String getDob() {
         return dob;

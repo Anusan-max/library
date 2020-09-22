@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import static javafx.beans.binding.Bindings.and;
+import model.UserRole;
 
 /**
  *
@@ -46,13 +47,10 @@ public class DbConnection {
             return "wrong username or password";
             } else {
                         do {
-                      if(rs.getString("UROLE").equals("lib")){
-                                       System.out.println(rs.getString("FIRSTNAME") + " is a librarian");
+                      if(UserRole.valueOf(rs.getString("UROLE")) == UserRole.LIBRARIAN){
                                        // show librarian window 
                                        new LibraryForm().setVisible(true);
-
                                    } else{
-                                       System.out.println(rs.getString("FIRSTNAME") + " is a member");
                                          new MemberForm().setVisible(true);
                                        // show memer windows
                                    }

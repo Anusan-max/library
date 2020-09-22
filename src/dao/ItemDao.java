@@ -25,14 +25,45 @@ public class ItemDao {
       private static PreparedStatement stmt = null;
       Connection conn = null;
     
+    public void IncreaseBorrowItemNumberAndDecreaseAvailableItemNumber(String itemCode) {
+        setConnection();
+        
+        if( conn != null ) {
+             try {
+                  stmt = conn.prepareStatement("select NOOFCOPIESAVAILABLE,NOOFCOPIESBORROWED from ITEM where ID = ?",ResultSet.TYPE_SCROLL_INSENSITIVE,
+                                        ResultSet.CONCUR_UPDATABLE);
+                  stmt.setString(1, itemCode);
+                  ResultSet rs = stmt.executeQuery();
+
+                   if (!rs.next()) {
+                  } else {
+                    rs.first();
+                    int noOfCopiesAvaliable = rs.getInt("NOOFCOPIESAVAILABLE");
+                    int noOfCopiesBorrowed = rs.getInt("NOOFCOPIESBORROWED");
+                    noOfCopiesAvaliable--;
+                    noOfCopiesBorrowed++;
+                    
+                 stmt = conn.prepareStatement("UPDATE Item SET NOOFCOPIESAVAILABLE = ?, NOOFCOPIESBORROWED = ? WHERE ID = ?");
+                 stmt.setInt(1, noOfCopiesAvaliable);
+                 stmt.setInt(2, noOfCopiesBorrowed);
+                 stmt.setString(3, itemCode);
+                 
+                 int i = stmt.executeUpdate();
+                    conn.close();
+                  }
+              } catch (SQLException ex) {
+                  Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
+              }
+        }
+        
+        
+        
+      }
+    
     public void createItem(Item item)  {
         // sql store this in database 
          
-          try {
-              conn = DbConnection.getConnection();
-          } catch (SQLException ex) {
-              Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
-          }
+         setConnection();
        
        if( conn != null ) {
              try {
@@ -59,11 +90,8 @@ public class ItemDao {
     
     public Item findByTitle(String title) {
             
-          try {
-              conn = DbConnection.getConnection();
-          } catch (SQLException ex) {
-              Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
-          }
+         setConnection();
+          
         if( conn != null ) {
               try {
                   stmt = conn.prepareStatement("select * from ITEM where TITLE = ?",ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -94,5 +122,13 @@ public class ItemDao {
               }
        }
        return null;
+    }
+    
+    private void setConnection() {
+         try {
+              conn = DbConnection.getConnection();
+          } catch (SQLException ex) {
+              Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
+          }
     }
 }

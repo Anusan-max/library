@@ -31,6 +31,10 @@ public class ItemService {
         // using the itemDao object and calling it's method
         return itemDao.findByTitle(title);
     }
+    
+    public void IncreaseBorrowItemNumberAndDecreaseAvailableItemNumber(String itemCode) {
+        itemDao.IncreaseBorrowItemNumberAndDecreaseAvailableItemNumber(itemCode);
+    }
        
     
 }
