@@ -5,6 +5,7 @@
  */
 package service;
 
+import dao.BorrowItemDao;
 import dao.ItemDao;
 import model.Item;
 
@@ -15,12 +16,12 @@ import model.Item;
 public class ItemService {
     
     // declare ItemDao
-    public final ItemDao itemDao;
+    private final ItemDao itemDao;
     
    //java constructure  
-    public ItemService() {
+    public ItemService(ItemDao itemDao) {
         // create new ItemDao object and assign it to the ItemDao variable
-        itemDao = new ItemDao(); 
+        this.itemDao = itemDao; 
     }
     
     public void addItem(Item item) {
@@ -32,8 +33,8 @@ public class ItemService {
         return itemDao.findByTitle(title);
     }
     
-    public void IncreaseBorrowItemNumberAndDecreaseAvailableItemNumber(String itemCode) {
-        itemDao.IncreaseBorrowItemNumberAndDecreaseAvailableItemNumber(itemCode);
+    public void updateNoOfCopies(String itemCode,boolean itemReturn) {
+        itemDao.updateNoOfCopies(itemCode,itemReturn);
     }
        
     

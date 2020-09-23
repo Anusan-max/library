@@ -25,7 +25,7 @@ public class ItemDao {
       private static PreparedStatement stmt = null;
       Connection conn = null;
     
-    public void IncreaseBorrowItemNumberAndDecreaseAvailableItemNumber(String itemCode) {
+    public void updateNoOfCopies(String itemCode,boolean itemReturn) {
         setConnection();
         
         if( conn != null ) {
@@ -40,8 +40,13 @@ public class ItemDao {
                     rs.first();
                     int noOfCopiesAvaliable = rs.getInt("NOOFCOPIESAVAILABLE");
                     int noOfCopiesBorrowed = rs.getInt("NOOFCOPIESBORROWED");
-                    noOfCopiesAvaliable--;
-                    noOfCopiesBorrowed++;
+                     if(itemReturn) {
+                        noOfCopiesAvaliable++;
+                        noOfCopiesBorrowed--;
+                    } else  {
+                        noOfCopiesAvaliable--;
+                        noOfCopiesBorrowed++;
+                    }
                     
                  stmt = conn.prepareStatement("UPDATE Item SET NOOFCOPIESAVAILABLE = ?, NOOFCOPIESBORROWED = ? WHERE ID = ?");
                  stmt.setInt(1, noOfCopiesAvaliable);

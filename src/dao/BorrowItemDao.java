@@ -30,7 +30,7 @@ public class BorrowItemDao {
        
        if( conn != null ) {
              try {
-                 stmt = conn.prepareStatement("INSERT INTO BORROWITEM(MEMBERID, ITEMID, BORROWDATE, RETURNDATE, PAID) values(?, ?, ?, ?, ?,?)");
+                 stmt = conn.prepareStatement("INSERT INTO BORROWITEM(MEMBERID, ITEMID, BORROWDATE, RETURNDATE, PAID,TOTALFINE) values(?, ?, ?, ?, ?,?)");
                  stmt.setString(1, borrowItem.getMemberId());
                  stmt.setString(2, borrowItem.getItemId());
                  stmt.setString(3, borrowItem.getBorrowDate());

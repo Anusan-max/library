@@ -20,8 +20,8 @@ public class UserService {
     
     public final UserDao userDao;
     
-     public UserService() {
-        userDao = new UserDao(); 
+     public UserService(UserDao userDao) {
+        this.userDao = userDao; 
     }
 
     // findById method needs a string as a parameter 

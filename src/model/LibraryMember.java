@@ -20,7 +20,6 @@ public class LibraryMember extends User{
      String address;
      String contactNo;
      MemberStatus memberStatus;
-     ArrayList<Item> items;
 
     public String getDob() {
         return dob;

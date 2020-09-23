@@ -5,6 +5,8 @@
  */
 package forms;
 
+import dao.ItemDao;
+import dao.UserDao;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -38,8 +40,8 @@ public class LibraryForm extends javax.swing.JFrame {
         closeAllWindows();
         
         // create service objects
-        itemService = new ItemService();
-        userService = new UserService();
+        itemService = new ItemService(new ItemDao());
+        userService = new UserService(new UserDao());
         
     }
 
@@ -727,7 +729,7 @@ public class LibraryForm extends javax.swing.JFrame {
                     list.add(member);
              addToTable(selectedValue,list);
              } else {
-                 System.out.println("bong");
+                //display message member not found
              }
            
        } else {

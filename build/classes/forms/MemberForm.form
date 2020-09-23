@@ -187,7 +187,7 @@
                   <EmptySpace min="-2" pref="71" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jButton3" min="-2" max="-2" attributes="0"/>
+                          <Component id="returnItemBtn" min="-2" max="-2" attributes="0"/>
                           <Component id="rItemCodeTxt" alignment="0" pref="91" max="32767" attributes="0"/>
                           <Component id="rMemberIdTxt" alignment="0" max="32767" attributes="0"/>
                       </Group>
@@ -216,8 +216,8 @@
                       <Component id="returnDateTxt" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
-                  <Component id="jButton3" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="62" max="32767" attributes="0"/>
+                  <Component id="returnItemBtn" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="70" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -250,12 +250,12 @@
             <Property name="dateFormatString" type="java.lang.String" value="dd/MM/yyyy"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton3">
+        <Component class="javax.swing.JButton" name="returnItemBtn">
           <Properties>
             <Property name="text" type="java.lang.String" value="Return"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="returnItemBtnActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
@@ -387,7 +387,7 @@
                       <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jComboBox2" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="617" max="32767" attributes="0"/>
+                  <EmptySpace pref="625" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -542,7 +542,7 @@
                   <EmptySpace min="-2" pref="83" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                          <Component id="borrowItemBtn" min="-2" max="-2" attributes="0"/>
                           <Component id="itemCodeTxt" alignment="0" pref="104" max="32767" attributes="0"/>
                           <Component id="memberIdTxt" alignment="0" max="32767" attributes="0"/>
                       </Group>
@@ -571,8 +571,8 @@
                       <Component id="borrowDateTxt" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                  <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="86" max="32767" attributes="0"/>
+                  <Component id="borrowItemBtn" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="94" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -600,12 +600,12 @@
         </Component>
         <Component class="javax.swing.JTextField" name="memberIdTxt">
         </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="borrowItemBtn">
           <Properties>
             <Property name="text" type="java.lang.String" value="Borrow"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="borrowItemBtnActionPerformed"/>
           </Events>
         </Component>
         <Component class="com.toedter.calendar.JDateChooser" name="borrowDateTxt">

@@ -5,6 +5,8 @@
  */
 package forms;
 
+import dao.BorrowItemDao;
+import dao.ItemDao;
 import java.util.Date;
 import javax.swing.JTextField;
 import model.BorrowItem;
@@ -24,8 +26,8 @@ public class MemberForm extends javax.swing.JFrame {
     public final ItemService itemService;
     
     public MemberForm() {
-        borrowItemService = new BorrowItemService();
-        itemService = new ItemService();
+        borrowItemService = new BorrowItemService(new BorrowItemDao());
+        itemService = new ItemService(new ItemDao());
         initComponents();
         closeAllWindows();
     }
@@ -51,7 +53,7 @@ public class MemberForm extends javax.swing.JFrame {
         rItemCodeTxt = new javax.swing.JTextField();
         rMemberIdTxt = new javax.swing.JTextField();
         returnDateTxt = new com.toedter.calendar.JDateChooser();
-        jButton3 = new javax.swing.JButton();
+        returnItemBtn = new javax.swing.JButton();
         findItemWindow = new javax.swing.JInternalFrame();
         jLabel2 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -81,7 +83,7 @@ public class MemberForm extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         itemCodeTxt = new javax.swing.JTextField();
         memberIdTxt = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        borrowItemBtn = new javax.swing.JButton();
         borrowDateTxt = new com.toedter.calendar.JDateChooser();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -152,10 +154,10 @@ public class MemberForm extends javax.swing.JFrame {
         returnDateTxt.setDate(new Date());
         returnDateTxt.setDateFormatString("dd/MM/yyyy");
 
-        jButton3.setText("Return");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        returnItemBtn.setText("Return");
+        returnItemBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                returnItemBtnActionPerformed(evt);
             }
         });
 
@@ -173,7 +175,7 @@ public class MemberForm extends javax.swing.JFrame {
                 .addGap(71, 71, 71)
                 .addGroup(returnItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(returnItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jButton3)
+                        .addComponent(returnItemBtn)
                         .addComponent(rItemCodeTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
                         .addComponent(rMemberIdTxt))
                     .addComponent(returnDateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -195,8 +197,8 @@ public class MemberForm extends javax.swing.JFrame {
                     .addComponent(jLabel8)
                     .addComponent(returnDateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(39, 39, 39)
-                .addComponent(jButton3)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addComponent(returnItemBtn)
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
         findItemWindow.setClosable(true);
@@ -350,7 +352,7 @@ public class MemberForm extends javax.swing.JFrame {
                 .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(613, Short.MAX_VALUE))
+                .addContainerGap(625, Short.MAX_VALUE))
         );
 
         borrowItemWindow.setVisible(true);
@@ -370,10 +372,10 @@ public class MemberForm extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Borrow");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        borrowItemBtn.setText("Borrow");
+        borrowItemBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                borrowItemBtnActionPerformed(evt);
             }
         });
 
@@ -393,7 +395,7 @@ public class MemberForm extends javax.swing.JFrame {
                 .addGap(83, 83, 83)
                 .addGroup(borrowItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(borrowItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jButton1)
+                        .addComponent(borrowItemBtn)
                         .addComponent(itemCodeTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
                         .addComponent(memberIdTxt))
                     .addComponent(borrowDateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -415,8 +417,8 @@ public class MemberForm extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(borrowDateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
-                .addComponent(jButton1)
-                .addContainerGap(82, Short.MAX_VALUE))
+                .addComponent(borrowItemBtn)
+                .addContainerGap(94, Short.MAX_VALUE))
         );
 
         jMenu1.setText("File");
@@ -513,7 +515,7 @@ public class MemberForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_itemCodeTxtActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void borrowItemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrowItemBtnActionPerformed
         // TODO add your handling code here:
         String itemCode = itemCodeTxt.getText();
         String memberId = memberIdTxt.getText();
@@ -525,13 +527,13 @@ public class MemberForm extends javax.swing.JFrame {
         borrowItem.setBorrowDate(borrowDate);
         
         String a = borrowItemService.borrowItem(borrowItem);
-        itemService.IncreaseBorrowItemNumberAndDecreaseAvailableItemNumber(itemCode);
+        itemService.updateNoOfCopies(itemCode,false);
         System.out.println("ding " + a);
         
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_borrowItemBtnActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void returnItemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnItemBtnActionPerformed
         // TODO add your handling code here:
         String itemCode = rItemCodeTxt.getText();
         String memberId = rMemberIdTxt.getText();
@@ -541,10 +543,10 @@ public class MemberForm extends javax.swing.JFrame {
         borrowItem.setItemId(itemCode);
         borrowItem.setMemberId(memberId);
         borrowItem.setReturnDate(returnDate);
-        
+        itemService.updateNoOfCopies(itemCode,true);
         borrowItemService.calculateFineAndReturnItem(borrowItem);
         
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_returnItemBtnActionPerformed
 private void closeAllWindows(){
      returnItemWindow.setVisible(false);
      borrowItemWindow.setVisible(false);
@@ -588,13 +590,12 @@ private void closeAllWindows(){
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser borrowDateTxt;
     private javax.swing.JMenuItem borrowItem;
+    private javax.swing.JButton borrowItemBtn;
     private javax.swing.JInternalFrame borrowItemWindow;
     private javax.swing.JMenuItem findItem;
     private javax.swing.JInternalFrame findItemWindow;
     private javax.swing.JTextField itemCodeTxt;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JInternalFrame jInternalFrame2;
@@ -634,6 +635,7 @@ private void closeAllWindows(){
     private javax.swing.JTextField rMemberIdTxt;
     private com.toedter.calendar.JDateChooser returnDateTxt;
     private javax.swing.JMenuItem returnItem;
+    private javax.swing.JButton returnItemBtn;
     private javax.swing.JInternalFrame returnItemWindow;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables

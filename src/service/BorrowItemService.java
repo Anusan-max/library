@@ -21,9 +21,9 @@ public class BorrowItemService {
     public final BorrowItemDao borrowItemDao;
     
    //java constructure  
-    public BorrowItemService() {
+    public BorrowItemService(BorrowItemDao borrowItemDao) {
         // create new ItemDao object and assign it to the ItemDao variable
-        borrowItemDao = new BorrowItemDao(); 
+        this.borrowItemDao = borrowItemDao; 
     }
     
     public String borrowItem(BorrowItem borrowItem) {
