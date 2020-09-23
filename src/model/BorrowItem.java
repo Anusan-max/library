@@ -16,6 +16,15 @@ public class BorrowItem {
     String borrowDate;
     String returnDate;
     int totalFine;
+    ItemType itemType;
+
+    public ItemType getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(ItemType itemType) {
+        this.itemType = itemType;
+    }
 
     public int getTotalFine() {
         return totalFine;

@@ -525,7 +525,7 @@ public class MemberForm extends javax.swing.JFrame {
         borrowItem.setItemId(itemCode);
         borrowItem.setMemberId(memberId);
         borrowItem.setBorrowDate(borrowDate);
-        
+        borrowItem.setItemType(itemService.findItemTypeById(borrowItem.getItemId()));
         String a = borrowItemService.borrowItem(borrowItem);
         itemService.updateNoOfCopies(itemCode,false);
         System.out.println("ding " + a);

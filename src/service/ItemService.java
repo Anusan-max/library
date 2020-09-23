@@ -8,6 +8,7 @@ package service;
 import dao.BorrowItemDao;
 import dao.ItemDao;
 import model.Item;
+import model.ItemType;
 
 /**
  *
@@ -31,6 +32,10 @@ public class ItemService {
     public Item findItemByTitle(String title) {
         // using the itemDao object and calling it's method
         return itemDao.findByTitle(title);
+    }
+    
+    public ItemType findItemTypeById(String itemId) {
+        return itemDao.findItemTypeById(itemId);
     }
     
     public void updateNoOfCopies(String itemCode,boolean itemReturn) {

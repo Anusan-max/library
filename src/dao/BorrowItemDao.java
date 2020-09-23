@@ -10,10 +10,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.BorrowItem;
 import model.Item;
+import model.ItemType;
 import model.Language;
 import model.RentType;
 
@@ -93,6 +95,31 @@ public class BorrowItemDao {
               } catch (SQLException ex) {
                   Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
               }
+        }
+        return null;
+    }
+    
+        public ArrayList<ItemType> getBorrowedItemTypesForUser(String userId) {
+        setConnection();
+        ArrayList<ItemType> resultString = new ArrayList<>();
+
+        if( conn != null ) {
+            try {
+                stmt = conn.prepareStatement("select ITEMTYPE from BORROWITEM where MEMBERID = ?");
+                stmt.setString(1, userId);
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    String a = rs.getString("ITEMTYPE");
+                    if(a != null) {
+                         resultString.add(ItemType.valueOf(rs.getString("ITEMTYPE")));
+                    }
+                   
+                }
+                System.out.println("db array size " + resultString.size() );
+                 return resultString;
+            } catch (SQLException ex) {
+                Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return null;
     }

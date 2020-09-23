@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Item;
+import model.ItemType;
 import model.Language;
 import model.RentType;
 
@@ -129,6 +130,30 @@ public class ItemDao {
        return null;
     }
     
+    public ItemType findItemTypeById(String id) {
+        setConnection();
+        if( conn != null ) {
+            try {
+                stmt = conn.prepareStatement("select ITEMTYPE from ITEM where ID = ?",ResultSet.TYPE_SCROLL_INSENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE);
+                stmt.setString(1, id);
+                ResultSet rs = stmt.executeQuery();
+
+                if (!rs.next()) {
+                    return null;
+                } else {
+
+                    rs.first();
+                    ItemType itemType = ItemType.valueOf(rs.getString("ITEMTYPE"));
+                    conn.close();
+                    return itemType;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
+    }
     private void setConnection() {
          try {
               conn = DbConnection.getConnection();

@@ -9,7 +9,13 @@ import dao.BorrowItemDao;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import model.BorrowItem;
+import model.ItemType;
 
 /**
  *
@@ -27,7 +33,15 @@ public class BorrowItemService {
     }
     
     public String borrowItem(BorrowItem borrowItem) {
-        return borrowItemDao.addBorrowItemToDb(borrowItem);
+         ArrayList<ItemType> listOfItems = getBorrowedItemTypesForUser(borrowItem.getMemberId());
+         
+         if(checkAvaliablity(getItemCountMap(listOfItems),borrowItem.getItemType())) {
+                return borrowItemDao.addBorrowItemToDb(borrowItem);
+         }else {
+             System.out.println("User can't borrow it ");
+            return "user can not borrow item";
+        }
+     
     }
     
     public void calculateFineAndReturnItem(BorrowItem borrowItem) {
@@ -36,6 +50,61 @@ public class BorrowItemService {
        applyFine(daysForFine,borrowItemWithFullDetail);
        borrowItemDao.updateBorrowedItem(borrowItem);
        
+    }
+    
+     public boolean checkAvaliablity(HashMap<ItemType, Integer> itemCount, ItemType itemType) {
+        boolean a =  isBookAllowed(itemCount,itemType) && isMagazineAllowed(itemCount,itemType) && typeAllowedToBorrow(itemType);
+        System.out.println(a);
+        return a;
+    }
+    
+    public ArrayList<ItemType> getBorrowedItemTypesForUser(String userId) {
+    return  borrowItemDao.getBorrowedItemTypesForUser(userId);
+    }
+       
+     private boolean typeAllowedToBorrow(ItemType itemType) {
+        if(itemType == ItemType.NEWSPAPER || itemType == ItemType.JOURNAL) {
+            return false;
+        }
+        return true;
+    }
+     
+     
+    private HashMap<ItemType,Integer> getItemCountMap(ArrayList<ItemType> listOfitems) {
+        Set<ItemType> unique = new HashSet<>(listOfitems);
+        HashMap<ItemType,Integer> userItemMap = new HashMap<>();
+
+        for (ItemType key : unique) {
+            userItemMap.put(key, Collections.frequency(listOfitems, key));
+        }
+        return userItemMap;
+    }
+    
+     private boolean isBookAllowed(HashMap<ItemType, Integer> itemCountMap, ItemType itemType) {
+         System.out.println("item count map" + itemCountMap);
+        if(itemCountMap.containsKey(ItemType.BOOKS) && itemType == ItemType.BOOKS) {
+            if(itemCountMap.get(itemType) < 2) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+     
+      private boolean isMagazineAllowed(HashMap<ItemType, Integer> itemCountMap, ItemType itemType) {
+        if(itemCountMap.containsKey(ItemType.MAGAZINE) && itemType == ItemType.MAGAZINE) {
+            if(itemCountMap.get(itemType) < 1) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        } else {
+            return true;
+        }
     }
     
     private BorrowItem getFullDetailsForBorrowItem(BorrowItem borrowItem) {
