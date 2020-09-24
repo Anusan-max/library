@@ -22,6 +22,23 @@ public class Item {
     private int noOfCopiesCurrentlyBorrowed;
     private RentType type;
     private Language language;
+    private ItemType itemType;
+
+    public RentType getType() {
+        return type;
+    }
+
+    public void setType(RentType type) {
+        this.type = type;
+    }
+
+    public ItemType getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(ItemType itemType) {
+        this.itemType = itemType;
+    }
 
     public RentType getRentType() {
         return type;

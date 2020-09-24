@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import model.Item;
+import model.ItemType;
 import model.Language;
 import model.LibraryMember;
 import model.RentType;
@@ -31,6 +32,7 @@ public class LibraryForm extends javax.swing.JFrame {
     // declare services
     public final ItemService itemService;
     public final UserService userService;
+
 
     /**
      * Creates new form LibraryForm
@@ -81,6 +83,8 @@ public class LibraryForm extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         isbn = new javax.swing.JTextField();
         noOfCopiesToBorrow = new javax.swing.JTextField();
+        jLabel21 = new javax.swing.JLabel();
+        itemType = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         findMemberWindow = new javax.swing.JInternalFrame();
         jLabel17 = new javax.swing.JLabel();
@@ -197,6 +201,10 @@ public class LibraryForm extends javax.swing.JFrame {
 
         jLabel20.setText("No of copies available to borrow");
 
+        jLabel21.setText("Item Type");
+
+        itemType.setModel(new DefaultComboBoxModel(ItemType.values()));
+
         javax.swing.GroupLayout addItemWindowLayout = new javax.swing.GroupLayout(addItemWindow.getContentPane());
         addItemWindow.getContentPane().setLayout(addItemWindowLayout);
         addItemWindowLayout.setHorizontalGroup(
@@ -212,14 +220,16 @@ public class LibraryForm extends javax.swing.JFrame {
                     .addComponent(jLabel16)
                     .addComponent(jLabel19)
                     .addComponent(jLabel15)
-                    .addComponent(jLabel20))
-                .addGap(135, 135, 135)
+                    .addComponent(jLabel20)
+                    .addComponent(jLabel21))
+                .addGap(4, 4, Short.MAX_VALUE)
                 .addGroup(addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(addItemBtn)
                     .addGroup(addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(isbn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
                         .addComponent(publishedDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                     .addGroup(addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(itemType, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(noOfCopiesToBorrow, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(publisher, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(language, javax.swing.GroupLayout.Alignment.LEADING, 0, 72, Short.MAX_VALUE)
@@ -227,7 +237,7 @@ public class LibraryForm extends javax.swing.JFrame {
                         .addComponent(author, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(code, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(title, javax.swing.GroupLayout.Alignment.LEADING)))
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         addItemWindowLayout.setVerticalGroup(
             addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -268,9 +278,13 @@ public class LibraryForm extends javax.swing.JFrame {
                 .addGroup(addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(language, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel16))
-                .addGap(47, 47, 47)
+                .addGap(9, 9, 9)
+                .addGroup(addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(itemType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel21))
+                .addGap(18, 18, 18)
                 .addComponent(addItemBtn)
-                .addContainerGap(262, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -355,7 +369,7 @@ public class LibraryForm extends javax.swing.JFrame {
                     .addComponent(jButton3))
                 .addGap(31, 31, 31)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(180, Short.MAX_VALUE))
+                .addContainerGap(236, Short.MAX_VALUE))
         );
 
         findItemWindow.setClosable(true);
@@ -549,7 +563,7 @@ public class LibraryForm extends javax.swing.JFrame {
                 .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(cbLan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(140, Short.MAX_VALUE))
+                .addContainerGap(196, Short.MAX_VALUE))
         );
 
         jButton2.getAccessibleContext().setAccessibleName("find");
@@ -618,11 +632,11 @@ public class LibraryForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(42, 42, 42)
                 .addComponent(addItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
+                .addGap(289, 289, 289)
                 .addComponent(findItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(52, 52, 52)
                 .addComponent(findMemberWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 3986, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 3892, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(257, 257, 257))
         );
@@ -674,6 +688,7 @@ public class LibraryForm extends javax.swing.JFrame {
         item.setNoOfCopiesToBorrow(Integer.parseInt(noOfCopiesToBorrow.getText()));
         item.setRentType((RentType)type.getSelectedItem());
         item.setLanguage((Language)language.getSelectedItem());
+        item.setItemType((ItemType)(itemType.getSelectedItem()));
         itemService.addItem(item);
     }//GEN-LAST:event_addItemBtnActionPerformed
 
@@ -820,6 +835,7 @@ public class LibraryForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem findMember;
     private javax.swing.JInternalFrame findMemberWindow;
     private javax.swing.JTextField isbn;
+    private javax.swing.JComboBox<String> itemType;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
@@ -835,6 +851,7 @@ public class LibraryForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

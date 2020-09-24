@@ -32,13 +32,14 @@ public class BorrowItemDao {
        
        if( conn != null ) {
              try {
-                 stmt = conn.prepareStatement("INSERT INTO BORROWITEM(MEMBERID, ITEMID, BORROWDATE, RETURNDATE, PAID,TOTALFINE) values(?, ?, ?, ?, ?,?)");
+                 stmt = conn.prepareStatement("INSERT INTO BORROWITEM(MEMBERID, ITEMID, BORROWDATE, RETURNDATE, PAID,TOTALFINE,ITEMTYPE) values(?, ?, ?, ?, ?,?,?)");
                  stmt.setString(1, borrowItem.getMemberId());
                  stmt.setString(2, borrowItem.getItemId());
                  stmt.setString(3, borrowItem.getBorrowDate());
                  stmt.setString(4, borrowItem.getReturnDate());
                  stmt.setBoolean(5, borrowItem.isPaid());
                  stmt.setInt(6,borrowItem.getTotalFine());
+                 stmt.setString(7,borrowItem.getItemType().toString());
                  int i = stmt.executeUpdate();
                  if(i == 1 ) {
                      return "Item Borrowed successfully";

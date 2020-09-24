@@ -10,6 +10,7 @@ import dao.ItemDao;
 import java.util.Date;
 import javax.swing.JTextField;
 import model.BorrowItem;
+import model.ItemType;
 import service.BorrowItemService;
 import service.ItemService;
 
@@ -525,9 +526,14 @@ public class MemberForm extends javax.swing.JFrame {
         borrowItem.setItemId(itemCode);
         borrowItem.setMemberId(memberId);
         borrowItem.setBorrowDate(borrowDate);
-        borrowItem.setItemType(itemService.findItemTypeById(borrowItem.getItemId()));
+        ItemType i = itemService.findItemTypeById(borrowItem.getItemId());
+        System.out.println("item type is " + i);
+        borrowItem.setItemType(i);
         String a = borrowItemService.borrowItem(borrowItem);
-        itemService.updateNoOfCopies(itemCode,false);
+        if( a == "Item Borrowed successfully") {
+            itemService.updateNoOfCopies(itemCode,false);
+        }
+        
         System.out.println("ding " + a);
         
         

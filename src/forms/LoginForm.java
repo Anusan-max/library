@@ -5,11 +5,14 @@
  */
 package forms;
 
+import dao.UserDao;
 import databaseconfig.DbConnection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import model.UserRole;
+import service.UserService;
 
 /**
  *
@@ -20,7 +23,14 @@ public class LoginForm extends javax.swing.JFrame {
     /**
      * Creates new form LoginForm
      */
+    
+    //declare a variable called userService for the UserService class 
+    private final UserService userService;
+   
+   
     public LoginForm() {
+        
+        userService = new UserService(new UserDao());
         initComponents();
     }
 
@@ -77,7 +87,7 @@ public class LoginForm extends javax.swing.JFrame {
                         .addComponent(jButton3)
                         .addComponent(tPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
                         .addComponent(tUserName)))
-                .addContainerGap(141, Short.MAX_VALUE))
+                .addContainerGap(198, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,7 +104,7 @@ public class LoginForm extends javax.swing.JFrame {
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(errorMessage)
-                .addContainerGap(79, Short.MAX_VALUE))
+                .addContainerGap(160, Short.MAX_VALUE))
         );
 
         pack();
@@ -107,13 +117,21 @@ public class LoginForm extends javax.swing.JFrame {
             String password = tPassword.getText();
             //TODO: validattion 
             
-            String result = DbConnection.Login(username, password);
+            String result = userService.login(username, password);
+           
             
-            if(result != null) {
-                errorMessage.setText(result);
-            } else{
-                //hide login window 
+            if(result == UserRole.LIBRARIAN.toString()) {
+                new LibraryForm().setVisible(true);
+                this.setVisible(false);
             }
+            else if (result == UserRole.MEMBER.toString()) {
+                          new MemberForm().setVisible(true);
+                          this.setVisible(false);
+            }
+            else{
+                    errorMessage.setText(result);
+            }
+          
            
         } catch (SQLException ex) {
             Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);

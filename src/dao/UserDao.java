@@ -6,6 +6,7 @@
 package dao;
 
 import databaseconfig.DbConnection;
+import static databaseconfig.DbConnection.getConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -125,4 +126,37 @@ public class UserDao {
        return null;
     }
     
+      public String login(String userName, String password) throws SQLException {
+       conn = getConnection();
+       
+       if( conn != null ) {
+           stmt = conn.prepareStatement("select * from libuser where USERNAME = ? AND PASSWORD = ?");
+           stmt.setString(1, userName);
+           stmt.setString(2, password);
+           ResultSet rs = stmt.executeQuery();
+           
+          
+           if (!rs.next()) {
+            return "wrong username or password";
+            } else {
+                        do {
+                      if(UserRole.valueOf(rs.getString("UROLE")) == UserRole.LIBRARIAN){
+                                       // show librarian window 
+                                      // new LibraryForm().setVisible(true);
+                                      return UserRole.LIBRARIAN.toString();
+                                   } else{
+                                        // new MemberForm().setVisible(true);
+                                       // show memer windows
+                                       return UserRole.MEMBER.toString();
+                                   }
+                        } while (rs.next());
+                    }
+       }
+           
+        else {
+            return "not connected to databae";
+       }
+   } 
 }
+
+

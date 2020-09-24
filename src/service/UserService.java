@@ -6,6 +6,7 @@
 package service;
 
 import dao.UserDao;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Item;
@@ -34,6 +35,7 @@ public class UserService {
         return userDao.findByType(type);
     }
 
-  
-    
+  public String login(String userName, String password) throws SQLException{
+         return userDao.login(userName, password);
+    }
 }

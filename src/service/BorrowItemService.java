@@ -9,6 +9,7 @@ import dao.BorrowItemDao;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ public class BorrowItemService {
     
     public String borrowItem(BorrowItem borrowItem) {
          ArrayList<ItemType> listOfItems = getBorrowedItemTypesForUser(borrowItem.getMemberId());
-         
+         System.out.println("list size is " + listOfItems.size());
          if(checkAvaliablity(getItemCountMap(listOfItems),borrowItem.getItemType())) {
                 return borrowItemDao.addBorrowItemToDb(borrowItem);
          }else {
@@ -115,11 +116,15 @@ public class BorrowItemService {
          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
          LocalDate borrowDateFromDb = LocalDate.parse(borrowDate,formatter);
          LocalDate userReturnDate = LocalDate.parse(returnDate,formatter);
-         int days = Period.between(borrowDateFromDb, userReturnDate).getDays();
+        // int days = Period.between(userReturnDate, borrowDateFromDb,PeriodUnits.Days).getDays();
+         long days =borrowDateFromDb.until(userReturnDate,ChronoUnit.DAYS);
+         System.out.println("borrow " + borrowDateFromDb);
+          System.out.println("return " + userReturnDate);
+         System.out.println("sdfsdf " + days);
          int daysForFine = 0;
          
          if(days > 14) {
-         daysForFine = days - 14;
+         daysForFine = (int) (days - 14);
          } 
          System.out.println("days are " + daysForFine);
          return daysForFine;
@@ -128,6 +133,7 @@ public class BorrowItemService {
     
     private void applyFine(int daysForFine,BorrowItem borrowItem) {
         borrowItem.setTotalFine(daysForFine * 20);
+        System.out.println(borrowItem.getTotalFine());
     }
     
     
