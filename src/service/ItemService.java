@@ -41,6 +41,10 @@ public class ItemService {
     public void updateNoOfCopies(String itemCode,boolean itemReturn) {
         itemDao.updateNoOfCopies(itemCode,itemReturn);
     }
+
+    public Item findItemById(String id) {
+        return itemDao.findById(id);
+    }
        
     
 }

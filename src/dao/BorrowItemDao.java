@@ -100,7 +100,7 @@ public class BorrowItemDao {
         return null;
     }
     
-        public ArrayList<ItemType> getBorrowedItemTypesForUser(String userId) {
+    public ArrayList<ItemType> getBorrowedItemTypesForUser(String userId) {
         setConnection();
         ArrayList<ItemType> resultString = new ArrayList<>();
 

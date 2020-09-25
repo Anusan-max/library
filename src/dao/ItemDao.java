@@ -11,6 +11,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Item;
@@ -130,6 +132,42 @@ public class ItemDao {
        return null;
     }
     
+        public Item findById(String id) {
+            
+         setConnection();
+          
+        if( conn != null ) {
+              try {
+                  stmt = conn.prepareStatement("select * from ITEM where ID = ?",ResultSet.TYPE_SCROLL_INSENSITIVE,
+                                        ResultSet.CONCUR_UPDATABLE);
+                  stmt.setString(1, id);
+                  ResultSet rs = stmt.executeQuery();
+
+                  if (!rs.next()) {
+                      return null;
+                  } else {
+                    Item item = new Item();
+                    rs.first();
+                    item.setCode(rs.getString("ID"));
+                    item.setTitle(rs.getString("TITLE"));
+                    item.setAuthor(rs.getString("AUTHOR"));
+                    item.setPublishedDate(rs.getString("PUBLISHEDDATE"));
+                    item.setIsbn(rs.getString("ISBN"));
+                    item.setPublisher(rs.getString("PUBLISHER"));
+                    item.setRentType(RentType.valueOf(rs.getString("TYPE")));
+                    item.setNoOfCopiesToBorrow(rs.getInt("NOOFCOPIESAVAILABLE"));
+                    item.setNoOfCopiesCurrentlyBorrowed(rs.getInt("NOOFCOPIESBORROWED"));
+                    item.setLanguage(Language.valueOf(rs.getString("LANGUAGE")));
+                    conn.close();
+                    return item;
+                  }
+              } catch (SQLException ex) {
+                  Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
+              }
+       }
+       return null;
+    }
+    
     public ItemType findItemTypeById(String id) {
         setConnection();
         if( conn != null ) {
@@ -154,6 +192,33 @@ public class ItemDao {
         }
         return null;
     }
+    
+     public ArrayList<Item> findAllItems() {
+        setConnection();
+        ArrayList<Item> resultString = new ArrayList<>();
+
+        if( conn != null ) {
+            try {
+                stmt = conn.prepareStatement("select * from ITEM");
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    Item item = new Item();
+                    item.setCode(rs.getString("ID"));
+                    item.setTitle(rs.getString("TITLE"));
+                    item.setNoOfCopiesToBorrow(Integer.parseInt(rs.getString("NOOFCOPIESAVAILABLE")));
+                    resultString.add(item);
+                }
+                 return resultString;
+            } catch (SQLException ex) {
+                Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
+    }
+        
+   
+     
+     
     private void setConnection() {
          try {
               conn = DbConnection.getConnection();
@@ -161,4 +226,6 @@ public class ItemDao {
               Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
           }
     }
+
+   
 }

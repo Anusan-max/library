@@ -3,12 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/kailainathan/Documents/NetBeansProjects/library/src/dao/BorrowItemDao.java</file>
-            <file>file:/C:/Users/kailainathan/Documents/NetBeansProjects/library/src/forms/MemberForm.java</file>
-            <file>file:/C:/Users/kailainathan/Documents/NetBeansProjects/library/src/model/ItemType.java</file>
-            <file>file:/C:/Users/kailainathan/Documents/NetBeansProjects/library/src/model/Item.java</file>
-            <file>file:/C:/Users/kailainathan/Documents/NetBeansProjects/library/src/service/BorrowItemService.java</file>
-            <file>file:/C:/Users/kailainathan/Documents/NetBeansProjects/library/src/forms/LibraryForm.java</file>
+            <file>file:/C:/Users/kailainathan/Documents/NetBeansProjects/library/src/model/Transaction.java</file>
+            <file>file:/C:/Users/kailainathan/Documents/NetBeansProjects/library/src/service/FinanceService.java</file>
         </group>
     </open-files>
 </project-private>
