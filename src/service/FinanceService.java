@@ -6,11 +6,12 @@
 package service;
 
 import dao.BorrowItemDao;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.summingInt;
-import model.BorrowItem;
+import model.FinancialReport;
 
 /**
  *
@@ -18,26 +19,31 @@ import model.BorrowItem;
  */
 public class FinanceService {
       BorrowItemDao borrowItemDao;
-    public FinanceService(BorrowItemDao borrowItemDao) {
+    
+      
+      public FinanceService(BorrowItemDao borrowItemDao) {
         this.borrowItemDao = borrowItemDao;
     }
 
-public Map<String,Integer> getFinanceReport() {
-    return calculateTotalPerItem(getBorrowItems());
+public Map<String,Integer> getFinanceReportForDate(String reportDate) {
+    return calculateTotalPerItem(getBorrowItems(reportDate));
 }
 
-private Map<String,Integer> calculateTotalPerItem(List<BorrowItem> borrowItems) {
+private Map<String,Integer> calculateTotalPerItem(List<FinancialReport> borrowItems) {
     return groupItemAndGetTotal(borrowItems);
-}
+    }
 
- private List<BorrowItem> getBorrowItems() {
-    //return borrowItemDao.getAllBorrowItemsPerDate();
-    return null;
+ private List<FinancialReport> getBorrowItems(String reportDate) {
+    return borrowItemDao.getAllBorrowItemsPerDate(reportDate);
 }
  
-    private Map<String,Integer> groupItemAndGetTotal(List<BorrowItem> list) {
+    private Map<String,Integer> groupItemAndGetTotal(List<FinancialReport> list) {
+        for (FinancialReport r : list ) {
+            System.out.println("mem " + r.getMemberId());
+            System.out.println("fine " + r.getTotalFine());
+        }
         return list.stream()
-                .collect(groupingBy(BorrowItem::getMemberId,
-                        summingInt(BorrowItem::getTotalFine)));
+                .collect(groupingBy(FinancialReport::getMemberId,
+                        summingInt(FinancialReport::getTotalFine)));
 }
 }

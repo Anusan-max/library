@@ -5,17 +5,23 @@
  */
 package forms;
 
+import dao.BorrowItemDao;
 import dao.ItemDao;
 import dao.TransactionDao;
 import dao.UserDao;
+import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import static jdk.nashorn.internal.objects.NativeArray.map;
 import model.Item;
 import model.ItemType;
 import model.Language;
@@ -24,6 +30,7 @@ import model.RentType;
 import model.Transaction;
 import model.TransactionType;
 import model.User;
+import service.FinanceService;
 import service.InventoryService;
 import service.ItemService;
 import service.TransactionService;
@@ -40,6 +47,7 @@ public class LibraryForm extends javax.swing.JFrame {
     public final UserService userService;
     private final InventoryService inventoryService;
     private final TransactionService transactionService;
+    private final FinanceService financeService;
 
 
     /**
@@ -55,6 +63,7 @@ public class LibraryForm extends javax.swing.JFrame {
         userService = new UserService(new UserDao());
         inventoryService = new InventoryService(itemDao);
         transactionService = new TransactionService(new TransactionDao());
+        financeService = new FinanceService(new BorrowItemDao());
         
     }
 
@@ -136,6 +145,7 @@ public class LibraryForm extends javax.swing.JFrame {
         reportTable = new javax.swing.JTable();
         cbReportType = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
+        reportDate = new com.toedter.calendar.JDateChooser();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         addItem = new javax.swing.JMenuItem();
@@ -177,6 +187,7 @@ public class LibraryForm extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Library Window");
         setBackground(new java.awt.Color(153, 153, 153));
+        setName("mainPanel"); // NOI18N
 
         addItemWindow.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         addItemWindow.setClosable(true);
@@ -199,6 +210,8 @@ public class LibraryForm extends javax.swing.JFrame {
         jLabel13.setText("Author");
 
         jLabel14.setText("Published Date");
+
+        publishedDate.setDateFormatString("dd/MM/yyyy");
 
         jLabel15.setText("Type");
 
@@ -302,7 +315,7 @@ public class LibraryForm extends javax.swing.JFrame {
                     .addComponent(jLabel21))
                 .addGap(18, 18, 18)
                 .addComponent(addItemBtn)
-                .addContainerGap(182, Short.MAX_VALUE))
+                .addContainerGap(198, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -387,7 +400,7 @@ public class LibraryForm extends javax.swing.JFrame {
                     .addComponent(jButton3))
                 .addGap(31, 31, 31)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(323, Short.MAX_VALUE))
+                .addContainerGap(355, Short.MAX_VALUE))
         );
 
         findItemWindow.setClosable(true);
@@ -628,7 +641,7 @@ public class LibraryForm extends javax.swing.JFrame {
                 .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(cbLan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(172, Short.MAX_VALUE))
+                .addContainerGap(204, Short.MAX_VALUE))
         );
 
         jButton2.getAccessibleContext().setAccessibleName("find");
@@ -659,8 +672,15 @@ public class LibraryForm extends javax.swing.JFrame {
         jScrollPane2.setViewportView(reportTable);
 
         cbReportType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inventory", "Finance", "Transaction" }));
+        cbReportType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbReportTypeActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Report Type");
+
+        reportDate.setDateFormatString("dd/MM/yyyy");
 
         javax.swing.GroupLayout inventoryReportWindowLayout = new javax.swing.GroupLayout(inventoryReportWindow.getContentPane());
         inventoryReportWindow.getContentPane().setLayout(inventoryReportWindowLayout);
@@ -671,9 +691,11 @@ public class LibraryForm extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(cbReportType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(91, 91, 91)
+                .addGap(18, 18, 18)
+                .addComponent(reportDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
                 .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(74, 74, 74))
+                .addGap(18, 18, 18))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inventoryReportWindowLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -682,14 +704,19 @@ public class LibraryForm extends javax.swing.JFrame {
             inventoryReportWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(inventoryReportWindowLayout.createSequentialGroup()
                 .addGap(38, 38, 38)
-                .addGroup(inventoryReportWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(inventoryReportWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cbReportType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel3)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(208, 208, 208))
+                .addGroup(inventoryReportWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(inventoryReportWindowLayout.createSequentialGroup()
+                        .addComponent(reportDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(inventoryReportWindowLayout.createSequentialGroup()
+                        .addGroup(inventoryReportWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(inventoryReportWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(cbReportType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel3)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(208, 208, 208))))
         );
 
         jMenu3.setText("File");
@@ -774,7 +801,7 @@ public class LibraryForm extends javax.swing.JFrame {
                 .addComponent(findItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(208, 208, 208)
                 .addComponent(findMemberWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 3749, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 3679, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(257, 257, 257))
         );
@@ -786,6 +813,7 @@ public class LibraryForm extends javax.swing.JFrame {
 
     private void addItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addItemActionPerformed
        closeAllWindows();
+       centerJIF(addItemWindow);
       addItemWindow.setVisible(true);
               
     }//GEN-LAST:event_addItemActionPerformed
@@ -797,6 +825,7 @@ public class LibraryForm extends javax.swing.JFrame {
     private void findItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findItemActionPerformed
         // TODO add your handling code here:
         closeAllWindows();
+        centerJIF(findItemWindow);
         findItemWindow.setVisible(true);
     }//GEN-LAST:event_findItemActionPerformed
 
@@ -974,6 +1003,9 @@ public class LibraryForm extends javax.swing.JFrame {
             addInventoryReportTable(inventoryService.getInventoryReport());
         } else if (selectedReportType == "Transaction") {
             addTransactionReportTable(transactionService.getAllTransaction());
+        } else {
+            String date = ((JTextField) reportDate.getDateEditor().getUiComponent()).getText();
+            addFinancialReportTable((HashMap<String, Integer>) financeService.getFinanceReportForDate(date));
         }
         
         transactionService.addTransaction(new Transaction(TransactionType.REPORT));
@@ -985,13 +1017,18 @@ public class LibraryForm extends javax.swing.JFrame {
         inventoryReportWindow.setVisible(true);
     }//GEN-LAST:event_inventoryReportActionPerformed
 
+    private void cbReportTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbReportTypeActionPerformed
+        // TODO add your handling code here:
+        String selectedReportType = cbReportType.getSelectedItem().toString();
+         if(selectedReportType == "Finance") { 
+             reportDate.setVisible(true);
+         } else {
+         reportDate.setVisible(false);
+         }
+    }//GEN-LAST:event_cbReportTypeActionPerformed
+
     
-    private void addInventoryReportTable(ArrayList<Item> itemList) {
-        String[] columnNames = {"Item Code",
-                        "Title",
-                        "No of Copies avaliable"
-                       };
-        
+    private void addInventoryReportTable(ArrayList<Item> itemList) {        
          DefaultTableModel model =  (DefaultTableModel) reportTable.getModel();
             model.setRowCount(0);
             model.setColumnCount(3);
@@ -1028,11 +1065,30 @@ public class LibraryForm extends javax.swing.JFrame {
             }
     }
     
+    private void addFinancialReportTable(HashMap<String,Integer> reportMap) {
+          DefaultTableModel model =  (DefaultTableModel) reportTable.getModel();
+            model.setRowCount(0);
+            model.setColumnCount(2);
+    reportTable.getColumnModel().getColumn(0).setHeaderValue("Member Id");
+    reportTable.getColumnModel().getColumn(1).setHeaderValue("Total Fine");
+    reportTable.getTableHeader().resizeAndRepaint();
+    
+            Object rowData[] = new Object[2];
+                        
+           for (Map.Entry<String, Integer> entry : reportMap.entrySet()) {
+                    rowData[0] = entry.getKey();
+                    rowData[1] = entry.getValue();
+                    model.addRow(rowData);
+                    
+        }                    
+    }
+    
     private void closeAllWindows(){
         findItemWindow.setVisible(false);
         addItemWindow.setVisible(false);
         findMemberWindow.setVisible(false);
         inventoryReportWindow.setVisible(false);
+        reportDate.setVisible(false);
     }
     /**
      * @param args the command line arguments
@@ -1068,6 +1124,15 @@ public class LibraryForm extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void centerJIF(JInternalFrame jif) {
+    Dimension desktopSize = this.getSize();
+    Dimension jInternalFrameSize = jif.getSize();
+    int width = (desktopSize.width - jInternalFrameSize.width) / 2;
+    int height = (desktopSize.height - jInternalFrameSize.height) / 2;
+    jif.setLocation(width, height);
+    jif.setVisible(true);
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem addItem;
@@ -1132,6 +1197,7 @@ public class LibraryForm extends javax.swing.JFrame {
     private javax.swing.JTextField noOfCopiesToBorrow;
     private com.toedter.calendar.JDateChooser publishedDate;
     private javax.swing.JTextField publisher;
+    private com.toedter.calendar.JDateChooser reportDate;
     private javax.swing.JTable reportTable;
     private javax.swing.JComboBox<String> selectMemberBy;
     private javax.swing.JTextField title;

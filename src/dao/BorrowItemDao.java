@@ -11,9 +11,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.BorrowItem;
+import model.FinancialReport;
 import model.Item;
 import model.ItemType;
 import model.Language;
@@ -118,6 +120,33 @@ public class BorrowItemDao {
                 }
                 System.out.println("db array size " + resultString.size() );
                  return resultString;
+            } catch (SQLException ex) {
+                Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
+    }
+    
+    
+
+    public List<FinancialReport> getAllBorrowItemsPerDate(String reportDate) {
+          setConnection();
+        ArrayList<FinancialReport> resultList = new ArrayList<>();
+
+        if( conn != null ) {
+            try {
+                System.out.println(" datre is " + reportDate);
+                stmt = conn.prepareStatement("select MEMBERID,TOTALFINE from BORROWITEM where RETURNDATE = ?");
+                stmt.setString(1, reportDate);
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    FinancialReport financialReport = new FinancialReport();
+                    financialReport.setMemberId(rs.getString("MEMBERID"));
+                    financialReport.setTotalFine(rs.getInt("TOTALFINE"));
+                    resultList.add(financialReport);
+                }
+                System.out.println("list size " + resultList.size());
+                 return resultList;
             } catch (SQLException ex) {
                 Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
             }
