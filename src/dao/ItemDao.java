@@ -75,7 +75,7 @@ public class ItemDao {
        
        if( conn != null ) {
              try {
-                 stmt = conn.prepareStatement("insert into Item values(?,?,?,?,?,?,?,?,?,?)");
+                 stmt = conn.prepareStatement("insert into Item values(?,?,?,?,?,?,?,?,?,?,?)");
                  stmt.setString(1, item.getCode());
                  stmt.setString(2, item.getTitle());
                  stmt.setString(3, item.getAuthor());
@@ -86,6 +86,7 @@ public class ItemDao {
                  stmt.setInt(8, item.getNoOfCopiesToBorrow());
                  stmt.setInt(9, 0);
                  stmt.setString(10, item.getLanguage().toString());
+                 stmt.setString(11, item.getItemType().toString());
                  
                  int i = stmt.executeUpdate();
                  System.out.println("rows added " + i );

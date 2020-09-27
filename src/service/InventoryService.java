@@ -6,6 +6,7 @@
 package service;
 
 import dao.ItemDao;
+import java.util.ArrayList;
 import java.util.List;
 import model.Item;
 
@@ -21,12 +22,16 @@ public class InventoryService {
         this.itemDao = itemDao;
     }
 
-    public List<Item> getInventoryReport() {
+    public ArrayList<Item> getInventoryReport() {
+        ArrayList<Item> itemList = new ArrayList();
         for(Item item : itemDao.findAllItems()) {
+            itemList.add(item);
             System.out.println("I " + item.getCode());
             System.out.println("I " + item.getTitle());
             System.out.println("I " + item.getNoOfCopiesToBorrow());
         }
-        return null;
+        return itemList;
     }
+    
+    
 }

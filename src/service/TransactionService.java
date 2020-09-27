@@ -17,16 +17,15 @@ public class TransactionService {
     
     TransactionDao transactionDao;
     
-    TransactionService(TransactionDao transactionDao) {
+    public TransactionService(TransactionDao transactionDao) {
         this.transactionDao = transactionDao;
     }
     
-    public void enterTransaction(Transaction transaction) {
-        transactionDao.enterTransaction(transaction);
+    public void addTransaction(Transaction transaction) {
+        transactionDao.addTransaction(transaction);
     }
     
     public ArrayList<Transaction> getAllTransaction() {
-        transactionDao.enterTransaction();
-        return null;
+        return transactionDao.getAllTransaction();
     }
 }

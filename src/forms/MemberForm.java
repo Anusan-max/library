@@ -7,6 +7,7 @@ package forms;
 
 import dao.BorrowItemDao;
 import dao.ItemDao;
+import dao.TransactionDao;
 import java.util.Date;
 import javax.swing.JTextField;
 import model.BorrowItem;
@@ -14,8 +15,11 @@ import model.Item;
 import model.ItemType;
 import model.Language;
 import model.RentType;
+import model.Transaction;
+import model.TransactionType;
 import service.BorrowItemService;
 import service.ItemService;
+import service.TransactionService;
 
 /**
  *
@@ -28,10 +32,12 @@ public class MemberForm extends javax.swing.JFrame {
      */
     public final BorrowItemService borrowItemService;
     public final ItemService itemService;
+    private final TransactionService transactionService;
     
     public MemberForm() {
         borrowItemService = new BorrowItemService(new BorrowItemDao());
         itemService = new ItemService(new ItemDao());
+        transactionService = new TransactionService(new TransactionDao());
         initComponents();
         closeAllWindows();
     }
@@ -590,6 +596,7 @@ public class MemberForm extends javax.swing.JFrame {
         String a = borrowItemService.borrowItem(borrowItem);
         if( a == "Item Borrowed successfully") {
             itemService.updateNoOfCopies(itemCode,false);
+            transactionService.addTransaction(new Transaction(TransactionType.BORROW));
         }
         
         System.out.println("ding " + a);
@@ -608,7 +615,10 @@ public class MemberForm extends javax.swing.JFrame {
         borrowItem.setMemberId(memberId);
         borrowItem.setReturnDate(returnDate);
         itemService.updateNoOfCopies(itemCode,true);
-        borrowItemService.calculateFineAndReturnItem(borrowItem);
+        if (borrowItemService.calculateFineAndReturnItem(borrowItem)) {
+             transactionService.addTransaction(new Transaction(TransactionType.FINE));
+        }
+        transactionService.addTransaction(new Transaction(TransactionType.RETURN));
         
     }//GEN-LAST:event_returnItemBtnActionPerformed
 
@@ -653,6 +663,9 @@ public class MemberForm extends javax.swing.JFrame {
           cbType.setSelectedItem(item.getRentType().toString());
           cbLan.setSelectedItem(item.getLanguage().toString());         
         }
+        
+        transactionService.addTransaction(new Transaction(TransactionType.FIND));
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void txtAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAuthorActionPerformed

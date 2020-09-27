@@ -45,11 +45,13 @@ public class BorrowItemService {
      
     }
     
-    public void calculateFineAndReturnItem(BorrowItem borrowItem) {
+    public boolean calculateFineAndReturnItem(BorrowItem borrowItem) {
+       boolean fileApplied = false;
        BorrowItem borrowItemWithFullDetail = getFullDetailsForBorrowItem(borrowItem);
        int daysForFine =  numberOfDaysForFine(borrowItemWithFullDetail.getBorrowDate(),borrowItemWithFullDetail.getReturnDate());
-       applyFine(daysForFine,borrowItemWithFullDetail);
+       fileApplied = applyFine(daysForFine,borrowItemWithFullDetail);
        borrowItemDao.updateBorrowedItem(borrowItem);
+       return fileApplied;
        
     }
     
@@ -131,9 +133,13 @@ public class BorrowItemService {
          
     }
     
-    private void applyFine(int daysForFine,BorrowItem borrowItem) {
-        borrowItem.setTotalFine(daysForFine * 20);
-        System.out.println(borrowItem.getTotalFine());
+    private boolean applyFine(int daysForFine,BorrowItem borrowItem) {
+        if(daysForFine > 0) {
+              borrowItem.setTotalFine(daysForFine * 20);
+              return true;
+        } else {
+        return false ;
+        }
     }
     
     

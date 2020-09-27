@@ -20,17 +20,11 @@ public class Item {
     private String isbn;
     private int noOfCopiesToBorrow;
     private int noOfCopiesCurrentlyBorrowed;
-    private RentType type;
+    private RentType rentType;
     private Language language;
     private ItemType itemType;
 
-    public RentType getType() {
-        return type;
-    }
 
-    public void setType(RentType type) {
-        this.type = type;
-    }
 
     public ItemType getItemType() {
         return itemType;
@@ -41,11 +35,11 @@ public class Item {
     }
 
     public RentType getRentType() {
-        return type;
+        return rentType;
     }
 
     public void setRentType(RentType type) {
-        this.type = type;
+        this.rentType = type;
     }
 
     public Language getLanguage() {
