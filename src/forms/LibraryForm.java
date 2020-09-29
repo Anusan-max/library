@@ -17,6 +17,7 @@ import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -26,6 +27,7 @@ import model.Item;
 import model.ItemType;
 import model.Language;
 import model.LibraryMember;
+import model.MemberType;
 import model.RentType;
 import model.Transaction;
 import model.TransactionType;
@@ -105,6 +107,7 @@ public class LibraryForm extends javax.swing.JFrame {
         noOfCopiesToBorrow = new javax.swing.JTextField();
         jLabel21 = new javax.swing.JLabel();
         itemType = new javax.swing.JComboBox<>();
+        addMessage = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         findMemberWindow = new javax.swing.JInternalFrame();
         jLabel17 = new javax.swing.JLabel();
@@ -139,6 +142,7 @@ public class LibraryForm extends javax.swing.JFrame {
         txtTitle = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
+        findError = new javax.swing.JLabel();
         inventoryReportWindow = new javax.swing.JInternalFrame();
         button1 = new java.awt.Button();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -269,11 +273,17 @@ public class LibraryForm extends javax.swing.JFrame {
                         .addComponent(code, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(title, javax.swing.GroupLayout.Alignment.LEADING)))
                 .addContainerGap(86, Short.MAX_VALUE))
+            .addGroup(addItemWindowLayout.createSequentialGroup()
+                .addGap(150, 150, 150)
+                .addComponent(addMessage)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         addItemWindowLayout.setVerticalGroup(
             addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(addItemWindowLayout.createSequentialGroup()
-                .addGap(52, 52, 52)
+                .addGap(20, 20, 20)
+                .addComponent(addMessage)
+                .addGap(18, 18, 18)
                 .addGroup(addItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -315,7 +325,7 @@ public class LibraryForm extends javax.swing.JFrame {
                     .addComponent(jLabel21))
                 .addGap(18, 18, 18)
                 .addComponent(addItemBtn)
-                .addContainerGap(198, Short.MAX_VALUE))
+                .addContainerGap(165, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -400,7 +410,7 @@ public class LibraryForm extends javax.swing.JFrame {
                     .addComponent(jButton3))
                 .addGap(31, 31, 31)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(355, Short.MAX_VALUE))
+                .addContainerGap(208, Short.MAX_VALUE))
         );
 
         findItemWindow.setClosable(true);
@@ -520,6 +530,8 @@ public class LibraryForm extends javax.swing.JFrame {
             }
         });
 
+        findError.setForeground(new java.awt.Color(255, 51, 51));
+
         javax.swing.GroupLayout findItemWindowLayout = new javax.swing.GroupLayout(findItemWindow.getContentPane());
         findItemWindow.getContentPane().setLayout(findItemWindowLayout);
         findItemWindowLayout.setHorizontalGroup(
@@ -564,10 +576,6 @@ public class LibraryForm extends javax.swing.JFrame {
                                 .addComponent(jTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, findItemWindowLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(findByVal, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(61, 61, 61))
                     .addGroup(findItemWindowLayout.createSequentialGroup()
                         .addGap(71, 71, 71)
                         .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -581,7 +589,13 @@ public class LibraryForm extends javax.swing.JFrame {
                             .addComponent(txtIsbn)
                             .addComponent(txtAuthor)
                             .addComponent(txtDate))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, findItemWindowLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(findError)
+                            .addComponent(findByVal, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(61, 61, 61)))
                 .addComponent(jButton2)
                 .addGap(41, 41, 41))
         );
@@ -594,7 +608,9 @@ public class LibraryForm extends javax.swing.JFrame {
                     .addComponent(findByVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lFindBy)
                     .addComponent(findByType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
+                .addGap(16, 16, 16)
+                .addComponent(findError)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -641,14 +657,14 @@ public class LibraryForm extends javax.swing.JFrame {
                 .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(cbLan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(204, Short.MAX_VALUE))
+                .addContainerGap(428, Short.MAX_VALUE))
         );
 
         jButton2.getAccessibleContext().setAccessibleName("find");
 
         inventoryReportWindow.setMaximizable(true);
         inventoryReportWindow.setResizable(true);
-        inventoryReportWindow.setTitle("Inventory Report");
+        inventoryReportWindow.setTitle("Report");
         inventoryReportWindow.setVisible(true);
 
         button1.setLabel("Report");
@@ -705,18 +721,15 @@ public class LibraryForm extends javax.swing.JFrame {
             .addGroup(inventoryReportWindowLayout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addGroup(inventoryReportWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(inventoryReportWindowLayout.createSequentialGroup()
-                        .addComponent(reportDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(inventoryReportWindowLayout.createSequentialGroup()
-                        .addGroup(inventoryReportWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(inventoryReportWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(cbReportType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel3)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(208, 208, 208))))
+                    .addComponent(reportDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(inventoryReportWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(inventoryReportWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cbReportType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(205, 205, 205))
         );
 
         jMenu3.setText("File");
@@ -750,7 +763,7 @@ public class LibraryForm extends javax.swing.JFrame {
         });
         jMenu3.add(findMember);
 
-        inventoryReport.setText("Inventory Report");
+        inventoryReport.setText("Report");
         inventoryReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inventoryReportActionPerformed(evt);
@@ -774,34 +787,28 @@ public class LibraryForm extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1756, 1756, 1756))
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(addItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(29, 29, 29)
                         .addComponent(inventoryReportWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(findItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(findMemberWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(1555, Short.MAX_VALUE))
+                    .addComponent(findItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(findMemberWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addComponent(addItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(inventoryReportWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(174, 174, 174)
+                    .addComponent(addItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(inventoryReportWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(108, 108, 108)
                 .addComponent(findItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(208, 208, 208)
+                .addGap(41, 41, 41)
                 .addComponent(findMemberWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 3679, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 4005, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(257, 257, 257))
         );
@@ -845,7 +852,9 @@ public class LibraryForm extends javax.swing.JFrame {
     private void addItemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addItemBtnActionPerformed
 
         // creating an object for item  
-        Item item = new Item();        
+        
+        if(validInput()) {
+            Item item = new Item();        
         item.setTitle(title.getText());
         item.setCode(code.getText());
         item.setAuthor(author.getText());
@@ -856,8 +865,25 @@ public class LibraryForm extends javax.swing.JFrame {
         item.setRentType((RentType)type.getSelectedItem());
         item.setLanguage((Language)language.getSelectedItem());
         item.setItemType((ItemType)(itemType.getSelectedItem()));
-        itemService.addItem(item);
-        transactionService.addTransaction(new Transaction(TransactionType.ADD));
+        String result = null;
+        
+        
+            if(canBorrowItem(item)) {
+                 result = itemService.addItem(item);
+            } else {
+            JOptionPane.showMessageDialog(null, "Journal or Newspaper can not be borrowed");
+            }
+        
+        
+        if(result != null) {
+              JOptionPane.showMessageDialog(null, result);
+              transactionService.addTransaction(new Transaction(TransactionType.ADD));
+        }
+           
+        } else 
+        {
+         JOptionPane.showMessageDialog(null, "Enter valid input");
+        }
     }//GEN-LAST:event_addItemBtnActionPerformed
 
     private void typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeActionPerformed
@@ -879,7 +905,11 @@ public class LibraryForm extends javax.swing.JFrame {
         
         if(selectedFindByType == "Title") {
         //get item by title
-          Item item =  itemService.findItemByTitle(selectedValue);
+          Item item = itemService.findItemByTitle(selectedValue);
+          if(item == null ) {
+              JOptionPane.showMessageDialog(null, "No items found for title");
+          }
+          else {
           txtAuthor.setText(item.getAuthor());
           txtPublisher.setText(item.getPublisher());
           txtTitle.setText(item.getTitle());
@@ -890,9 +920,15 @@ public class LibraryForm extends javax.swing.JFrame {
           txtCurrent.setText(Integer.toString(item.getNoOfCopiesCurrentlyBorrowed()));
           cbType.setSelectedItem(item.getRentType().toString());
           cbLan.setSelectedItem(item.getLanguage().toString());  
+          }
+          
         } 
         else {
-          Item item =  itemService.findItemById(selectedValue);
+             Item item = itemService.findItemById(selectedValue);
+          if(item == null ) {
+              JOptionPane.showMessageDialog(null, "No items found for Id");
+          }
+          else {
           txtAuthor.setText(item.getAuthor());
           txtPublisher.setText(item.getPublisher());
           txtTitle.setText(item.getTitle());
@@ -902,7 +938,9 @@ public class LibraryForm extends javax.swing.JFrame {
           txtAvailable.setText(Integer.toString(item.getNoOfCopiesToBorrow()));
           txtCurrent.setText(Integer.toString(item.getNoOfCopiesCurrentlyBorrowed()));
           cbType.setSelectedItem(item.getRentType().toString());
-          cbLan.setSelectedItem(item.getLanguage().toString());         
+          cbLan.setSelectedItem(item.getLanguage().toString());   
+          }
+               
         }
         transactionService.addTransaction(new Transaction(TransactionType.FIND));
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -911,31 +949,61 @@ public class LibraryForm extends javax.swing.JFrame {
        String selectedSelectMemberBy = String.valueOf(selectMemberBy.getSelectedItem());
        
        //get the value from the text box 
-       String selectedValue = txtFindMember.getText();
+       String txtValue = txtFindMember.getText();
        
        // if combobox selected value is id 
        if(selectedSelectMemberBy == "Id"){
            //creating a array list of  LibraryMember
             ArrayList<LibraryMember> list = new ArrayList<LibraryMember>();
              // getting the librarymember and adding it to the list 
-             LibraryMember member = userService.findById(selectedValue);
+             LibraryMember member = userService.findById(txtValue);
              
              if(member != null) {
                     list.add(member);
              addToTable(list);
              } else {
-                //display message member not found
+               JOptionPane.showMessageDialog(null, "Member not found for Id");
              }
            
        } else {
-           addToTable(userService.findByType(selectedValue));
+           if(containsType(txtValue)) {
+             addToTable(userService.findByType(txtValue));
+           } else {
+           JOptionPane.showMessageDialog(null, "Member type not found");
+           }
            
        }
        
        transactionService.addTransaction(new Transaction(TransactionType.FIND));
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private boolean validInput() {
+        if(title.getText().isEmpty() || code.getText().isEmpty() || author.getText().isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    private boolean canBorrowItem(Item item) {
+        if(item.getItemType()== ItemType.JOURNAL || item.getItemType() == ItemType.NEWSPAPER ) {
+         if(item.getRentType() == RentType.BORROW) {
+             return false;
+         }
+        }
+        return true;
+       
+    }
     
+    private boolean containsType(String type) {
+
+    for (MemberType m : MemberType.values()) {
+        if (m.name().equals(type)) {
+            return true;
+        }
+    }
+
+    return false;
+}
     
     private void addToTable(ArrayList<LibraryMember> list) {
             DefaultTableModel model =  (DefaultTableModel) jTable1.getModel();
@@ -1138,6 +1206,7 @@ public class LibraryForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem addItem;
     private javax.swing.JButton addItemBtn;
     private javax.swing.JInternalFrame addItemWindow;
+    private javax.swing.JLabel addMessage;
     private javax.swing.JTextField author;
     private java.awt.Button button1;
     private javax.swing.JComboBox<String> cbLan;
@@ -1146,6 +1215,7 @@ public class LibraryForm extends javax.swing.JFrame {
     private javax.swing.JTextField code;
     private javax.swing.JComboBox<String> findByType;
     private javax.swing.JTextField findByVal;
+    private javax.swing.JLabel findError;
     private javax.swing.JMenuItem findItem;
     private javax.swing.JInternalFrame findItemWindow;
     private javax.swing.JMenuItem findMember;

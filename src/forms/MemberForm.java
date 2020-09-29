@@ -9,6 +9,7 @@ import dao.BorrowItemDao;
 import dao.ItemDao;
 import dao.TransactionDao;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import model.BorrowItem;
 import model.Item;
@@ -590,16 +591,22 @@ public class MemberForm extends javax.swing.JFrame {
         borrowItem.setItemId(itemCode);
         borrowItem.setMemberId(memberId);
         borrowItem.setBorrowDate(borrowDate);
-        ItemType i = itemService.findItemTypeById(borrowItem.getItemId());
-        System.out.println("item type is " + i);
-        borrowItem.setItemType(i);
-        String a = borrowItemService.borrowItem(borrowItem);
-        if( a == "Item Borrowed successfully") {
+        Item item = itemService.findItemById(borrowItem.getItemId());
+        System.out.println(item.getItemType());
+        borrowItem.setItemType(item.getItemType());
+        String result = "";
+        if(item.getNoOfCopiesToBorrow() > 0) {
+           result = borrowItemService.borrowItem(borrowItem);
+        } else {
+         result = "Item not avaliable";
+        }
+        
+        if( result == "Item Borrowed successfully") {
             itemService.updateNoOfCopies(itemCode,false);
             transactionService.addTransaction(new Transaction(TransactionType.BORROW));
         }
+         JOptionPane.showMessageDialog(null, result);
         
-        System.out.println("ding " + a);
         
         
     }//GEN-LAST:event_borrowItemBtnActionPerformed
@@ -614,11 +621,19 @@ public class MemberForm extends javax.swing.JFrame {
         borrowItem.setItemId(itemCode);
         borrowItem.setMemberId(memberId);
         borrowItem.setReturnDate(returnDate);
-        itemService.updateNoOfCopies(itemCode,true);
-        if (borrowItemService.calculateFineAndReturnItem(borrowItem)) {
-             transactionService.addTransaction(new Transaction(TransactionType.FINE));
+        String result = borrowItemService.calculateFineAndReturnItem(borrowItem);
+        
+        if ( result != null) {
+            if(result.contains("Fine Applied and returned")) {
+              transactionService.addTransaction(new Transaction(TransactionType.FINE));
+            }
+              itemService.updateNoOfCopies(itemCode,true);
+              transactionService.addTransaction(new Transaction(TransactionType.RETURN));
+              JOptionPane.showMessageDialog(null, result);
+        } else {
+              JOptionPane.showMessageDialog(null, "Member did not buy this item");
         }
-        transactionService.addTransaction(new Transaction(TransactionType.RETURN));
+       
         
     }//GEN-LAST:event_returnItemBtnActionPerformed
 
@@ -638,7 +653,10 @@ public class MemberForm extends javax.swing.JFrame {
         
         if(selectedFindByType == "Title") {
         //get item by title
-          Item item =  itemService.findItemByTitle(selectedValue);
+              Item item = itemService.findItemByTitle(selectedValue);
+          if(item == null ) {
+              JOptionPane.showMessageDialog(null, "No items found for title");
+          } else {
           txtAuthor.setText(item.getAuthor());
           txtPublisher.setText(item.getPublisher());
           txtTitle.setText(item.getTitle());
@@ -648,10 +666,15 @@ public class MemberForm extends javax.swing.JFrame {
           txtAvailable.setText(Integer.toString(item.getNoOfCopiesToBorrow()));
           txtCurrent.setText(Integer.toString(item.getNoOfCopiesCurrentlyBorrowed()));
           cbType.setSelectedItem(item.getRentType().toString());
-          cbLan.setSelectedItem(item.getLanguage().toString()); 
+          cbLan.setSelectedItem(item.getLanguage().toString());
+          }
+         
         } 
         else {    
           Item item =  itemService.findItemById(selectedValue);
+           if(item == null ) {
+              JOptionPane.showMessageDialog(null, "No items found for Id");
+          } else {
           txtAuthor.setText(item.getAuthor());
           txtPublisher.setText(item.getPublisher());
           txtTitle.setText(item.getTitle());
@@ -661,7 +684,8 @@ public class MemberForm extends javax.swing.JFrame {
           txtAvailable.setText(Integer.toString(item.getNoOfCopiesToBorrow()));
           txtCurrent.setText(Integer.toString(item.getNoOfCopiesCurrentlyBorrowed()));
           cbType.setSelectedItem(item.getRentType().toString());
-          cbLan.setSelectedItem(item.getLanguage().toString());         
+          cbLan.setSelectedItem(item.getLanguage().toString());    
+           }
         }
         
         transactionService.addTransaction(new Transaction(TransactionType.FIND));

@@ -25,8 +25,8 @@ public class ItemService {
         this.itemDao = itemDao; 
     }
     
-    public void addItem(Item item) {
-        itemDao.createItem(item);
+    public String addItem(Item item) {
+        return itemDao.createItem(item);
     }
     
     public Item findItemByTitle(String title) {
@@ -41,6 +41,7 @@ public class ItemService {
     public void updateNoOfCopies(String itemCode,boolean itemReturn) {
         itemDao.updateNoOfCopies(itemCode,itemReturn);
     }
+    
 
     public Item findItemById(String id) {
         return itemDao.findById(id);

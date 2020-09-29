@@ -6,6 +6,7 @@
 package service;
 
 import dao.BorrowItemDao;
+import dto.BorrowItemDto;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -35,43 +36,58 @@ public class BorrowItemService {
     
     public String borrowItem(BorrowItem borrowItem) {
          ArrayList<ItemType> listOfItems = getBorrowedItemTypesForUser(borrowItem.getMemberId());
-         System.out.println("list size is " + listOfItems.size());
-         if(checkAvaliablity(getItemCountMap(listOfItems),borrowItem.getItemType())) {
+         BorrowItemDto borrowItemDto = checkAvaliablity(getItemCountMap(listOfItems),borrowItem.getItemType());
+         if(borrowItemDto.isAllowed()) {
                 return borrowItemDao.addBorrowItemToDb(borrowItem);
          }else {
-             System.out.println("User can't borrow it ");
-            return "user can not borrow item";
+            return borrowItemDto.getMessage();
         }
      
     }
     
-    public boolean calculateFineAndReturnItem(BorrowItem borrowItem) {
-       boolean fileApplied = false;
+    public String calculateFineAndReturnItem(BorrowItem borrowItem) {
        BorrowItem borrowItemWithFullDetail = getFullDetailsForBorrowItem(borrowItem);
+       
+       if(borrowItemWithFullDetail != null) {
        int daysForFine =  numberOfDaysForFine(borrowItemWithFullDetail.getBorrowDate(),borrowItemWithFullDetail.getReturnDate());
-       fileApplied = applyFine(daysForFine,borrowItemWithFullDetail);
+       String result = applyFine(daysForFine,borrowItemWithFullDetail);
        borrowItemDao.updateBorrowedItem(borrowItem);
-       return fileApplied;
+       return result;
+       } else {
+       return null;
+       }
+      
        
     }
     
-     public boolean checkAvaliablity(HashMap<ItemType, Integer> itemCount, ItemType itemType) {
-        boolean a =  isBookAllowed(itemCount,itemType) && isMagazineAllowed(itemCount,itemType) && typeAllowedToBorrow(itemType);
-        System.out.println(a);
-        return a;
+     public BorrowItemDto checkAvaliablity(HashMap<ItemType, Integer> itemCount, ItemType itemType) {
+         BorrowItemDto borrowItemDto = new BorrowItemDto(false);
+         
+         BorrowItemDto bookAllowed = isBookAllowed(itemCount,itemType);
+         BorrowItemDto magazineAllowed =  isMagazineAllowed(itemCount,itemType);
+         BorrowItemDto typeAllowed = typeAllowedToBorrow(itemType);
+         
+         if(bookAllowed.isAllowed() && magazineAllowed.isAllowed() && typeAllowed.isAllowed()) {
+             borrowItemDto.setAllowed(true);
+             borrowItemDto.setMessage("Item Borrowed");
+         } else {
+             if(bookAllowed.getMessage() != null) {
+                 borrowItemDto.setMessage(bookAllowed.getMessage());
+             } else if (magazineAllowed.getMessage() != null) {
+                  borrowItemDto.setMessage(magazineAllowed.getMessage());
+             }else if (typeAllowed.getMessage() != null) {
+                  borrowItemDto.setMessage(typeAllowed.getMessage());
+             }
+              borrowItemDto.setAllowed(false);
+         }
+         
+        return borrowItemDto;
     }
     
     public ArrayList<ItemType> getBorrowedItemTypesForUser(String userId) {
     return  borrowItemDao.getBorrowedItemTypesForUser(userId);
     }
        
-     private boolean typeAllowedToBorrow(ItemType itemType) {
-        if(itemType == ItemType.NEWSPAPER || itemType == ItemType.JOURNAL) {
-            return false;
-        }
-        return true;
-    }
-     
      
     private HashMap<ItemType,Integer> getItemCountMap(ArrayList<ItemType> listOfitems) {
         Set<ItemType> unique = new HashSet<>(listOfitems);
@@ -83,31 +99,51 @@ public class BorrowItemService {
         return userItemMap;
     }
     
-     private boolean isBookAllowed(HashMap<ItemType, Integer> itemCountMap, ItemType itemType) {
-         System.out.println("item count map" + itemCountMap);
+    private BorrowItemDto typeAllowedToBorrow(ItemType itemType) {
+        BorrowItemDto borrowItemDto = new BorrowItemDto(false);
+        
+
+        if(itemType == ItemType.NEWSPAPER || itemType == ItemType.JOURNAL) {
+             borrowItemDto.setAllowed(false);
+             borrowItemDto.setMessage("Can not borrow NEWSPAPER or JOURNAL");
+        } else {
+              borrowItemDto.setAllowed(true);
+        }
+      
+        return borrowItemDto;
+    }
+    
+     private BorrowItemDto isBookAllowed(HashMap<ItemType, Integer> itemCountMap, ItemType itemType) {
+        BorrowItemDto borrowItemDto = new BorrowItemDto(false);
+        
         if(itemCountMap.containsKey(ItemType.BOOKS) && itemType == ItemType.BOOKS) {
             if(itemCountMap.get(itemType) < 2) {
-                return true;
+                borrowItemDto.setAllowed(true);
             }
             else {
-                return false;
+                borrowItemDto.setAllowed(false);
+                borrowItemDto.setMessage("Already borrowed more than 2 BOOKS");
             }
         } else {
-            return true;
+             borrowItemDto.setAllowed(true);
         }
+        return borrowItemDto;
     }
      
-      private boolean isMagazineAllowed(HashMap<ItemType, Integer> itemCountMap, ItemType itemType) {
+      private BorrowItemDto isMagazineAllowed(HashMap<ItemType, Integer> itemCountMap, ItemType itemType) {
+          BorrowItemDto borrowItemDto = new BorrowItemDto(false);
         if(itemCountMap.containsKey(ItemType.MAGAZINE) && itemType == ItemType.MAGAZINE) {
             if(itemCountMap.get(itemType) < 1) {
-                return true;
+                 borrowItemDto.setAllowed(true);
             }
             else {
-                return false;
+                borrowItemDto.setAllowed(false);
+                borrowItemDto.setMessage("Already borrowed more than 1 MAGAZINE");
             }
         } else {
-            return true;
+            borrowItemDto.setAllowed(true);
         }
+        return borrowItemDto;
     }
     
     private BorrowItem getFullDetailsForBorrowItem(BorrowItem borrowItem) {
@@ -133,12 +169,13 @@ public class BorrowItemService {
          
     }
     
-    private boolean applyFine(int daysForFine,BorrowItem borrowItem) {
+    private String applyFine(int daysForFine,BorrowItem borrowItem) {
         if(daysForFine > 0) {
-              borrowItem.setTotalFine(daysForFine * 20);
-              return true;
+            int i = daysForFine * 20;
+              borrowItem.setTotalFine(i);
+              return i + "RS - Fine Applied and returned";
         } else {
-        return false ;
+        return "returned without Fine" ;
         }
     }
     

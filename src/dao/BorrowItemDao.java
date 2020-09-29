@@ -59,16 +59,17 @@ public class BorrowItemDao {
         setConnection();
          if( conn != null ) {
               try {
-                  stmt = conn.prepareStatement("select * from BORROWITEM where MEMBERID = ? AND ITEMID = ?",ResultSet.TYPE_SCROLL_INSENSITIVE,
+                  stmt = conn.prepareStatement("select * from BORROWITEM where MEMBERID = ? AND ITEMID = ? AND RETURNDATE IS NULL",ResultSet.TYPE_SCROLL_INSENSITIVE,
                                         ResultSet.CONCUR_UPDATABLE);
                   stmt.setString(1, borrowItem.getMemberId());
                   stmt.setString(2, borrowItem.getItemId());
                   ResultSet rs = stmt.executeQuery();
                   if (!rs.next()) {
+                      return null;
                   } else {
                     rs.first();
-                    borrowItem.setBorrowDate(rs.getString("BORROWDATE"));
-                    borrowItem.setBorrowId(rs.getString("BORROWID"));
+                        borrowItem.setBorrowDate(rs.getString("BORROWDATE"));
+                        borrowItem.setBorrowId(rs.getString("BORROWID"));
                     conn.close();
                     return borrowItem;
                   }

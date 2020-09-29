@@ -68,7 +68,7 @@ public class ItemDao {
         
       }
     
-    public void createItem(Item item)  {
+    public String createItem(Item item)  {
         // sql store this in database 
          
          setConnection();
@@ -89,12 +89,13 @@ public class ItemDao {
                  stmt.setString(11, item.getItemType().toString());
                  
                  int i = stmt.executeUpdate();
-                 System.out.println("rows added " + i );
                  conn.close();
+                 return "Item Added";
              } catch (SQLException ex) {
                  Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
              }
        }
+       return null;
     }
     
     public Item findByTitle(String title) {
@@ -123,6 +124,7 @@ public class ItemDao {
                     item.setNoOfCopiesToBorrow(rs.getInt("NOOFCOPIESAVAILABLE"));
                     item.setNoOfCopiesCurrentlyBorrowed(rs.getInt("NOOFCOPIESBORROWED"));
                     item.setLanguage(Language.valueOf(rs.getString("LANGUAGE")));
+                    item.setItemType(ItemType.valueOf(rs.getString("ITEMTYPE")));
                     conn.close();
                     return item;
                   }
@@ -159,6 +161,8 @@ public class ItemDao {
                     item.setNoOfCopiesToBorrow(rs.getInt("NOOFCOPIESAVAILABLE"));
                     item.setNoOfCopiesCurrentlyBorrowed(rs.getInt("NOOFCOPIESBORROWED"));
                     item.setLanguage(Language.valueOf(rs.getString("LANGUAGE")));
+                    item.setItemType(ItemType.valueOf(rs.getString("ITEMTYPE")));
+
                     conn.close();
                     return item;
                   }

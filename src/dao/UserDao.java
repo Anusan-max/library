@@ -98,6 +98,7 @@ public class UserDao {
 
                   //if no results found 
                   while (rs.next()) { 
+                      if(UserRole.valueOf(rs.getString("UROLE")) == UserRole.MEMBER) {
                         LibraryMember member = new LibraryMember();
                         member.setName(rs.getString("NAME"));
                         member.setContactNo(rs.getString("CONTACTNO"));
@@ -111,6 +112,7 @@ public class UserDao {
                              System.out.println(" inside the if  " + member.getMemberType());
                              memberList.add(member);
                         }
+                    }
                   }
                   System.out.println("memberList " + memberList);
                   conn.close();
