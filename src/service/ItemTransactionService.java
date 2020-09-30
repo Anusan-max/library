@@ -5,7 +5,7 @@
  */
 package service;
 
-import dao.BorrowItemDao;
+import dao.ItemTransactionDao;
 import dto.BorrowItemDto;
 import java.time.LocalDate;
 import java.time.Period;
@@ -16,25 +16,25 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-import model.BorrowItem;
+import model.ItemTransaction;
 import model.ItemType;
 
 /**
  *
  * @author kailainathan
  */
-public class BorrowItemService {
+public class ItemTransactionService {
     
       // declare ItemDao
-    public final BorrowItemDao borrowItemDao;
+    public final ItemTransactionDao borrowItemDao;
     
    //java constructure  
-    public BorrowItemService(BorrowItemDao borrowItemDao) {
+    public ItemTransactionService(ItemTransactionDao borrowItemDao) {
         // create new ItemDao object and assign it to the ItemDao variable
         this.borrowItemDao = borrowItemDao; 
     }
     
-    public String borrowItem(BorrowItem borrowItem) {
+    public String borrowItem(ItemTransaction borrowItem) {
          ArrayList<ItemType> listOfItems = getBorrowedItemTypesForUser(borrowItem.getMemberId());
          BorrowItemDto borrowItemDto = checkAvaliablity(getItemCountMap(listOfItems),borrowItem.getItemType());
          if(borrowItemDto.isAllowed()) {
@@ -45,8 +45,8 @@ public class BorrowItemService {
      
     }
     
-    public String calculateFineAndReturnItem(BorrowItem borrowItem) {
-       BorrowItem borrowItemWithFullDetail = getFullDetailsForBorrowItem(borrowItem);
+    public String calculateFineAndReturnItem(ItemTransaction borrowItem) {
+       ItemTransaction borrowItemWithFullDetail = getFullDetailsForBorrowItem(borrowItem);
        
        if(borrowItemWithFullDetail != null) {
        int daysForFine =  numberOfDaysForFine(borrowItemWithFullDetail.getBorrowDate(),borrowItemWithFullDetail.getReturnDate());
@@ -146,7 +146,7 @@ public class BorrowItemService {
         return borrowItemDto;
     }
     
-    private BorrowItem getFullDetailsForBorrowItem(BorrowItem borrowItem) {
+    private ItemTransaction getFullDetailsForBorrowItem(ItemTransaction borrowItem) {
          return borrowItemDao.getBorrowedItem(borrowItem);
     }
     
@@ -169,10 +169,11 @@ public class BorrowItemService {
          
     }
     
-    private String applyFine(int daysForFine,BorrowItem borrowItem) {
+    private String applyFine(int daysForFine,ItemTransaction borrowItem) {
         if(daysForFine > 0) {
             int i = daysForFine * 20;
               borrowItem.setTotalFine(i);
+              borrowItem.setPaid(true);
               return i + "RS - Fine Applied and returned";
         } else {
         return "returned without Fine" ;

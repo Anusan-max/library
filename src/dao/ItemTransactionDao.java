@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.BorrowItem;
+import model.ItemTransaction;
 import model.FinancialReport;
 import model.Item;
 import model.ItemType;
@@ -25,11 +25,11 @@ import model.RentType;
  *
  * @author kailainathan
  */
-public class BorrowItemDao {
+public class ItemTransactionDao {
      private static PreparedStatement stmt = null;
      Connection conn = null;
       
-    public String addBorrowItemToDb(BorrowItem borrowItem){
+    public String addBorrowItemToDb(ItemTransaction borrowItem){
          setConnection();
        
        if( conn != null ) {
@@ -55,7 +55,7 @@ public class BorrowItemDao {
         return null;
     }
 
-    public BorrowItem getBorrowedItem(BorrowItem borrowItem) {
+    public ItemTransaction getBorrowedItem(ItemTransaction borrowItem) {
         setConnection();
          if( conn != null ) {
               try {
@@ -80,7 +80,7 @@ public class BorrowItemDao {
          return null;
     }
     
-    public String updateBorrowedItem(BorrowItem borrowItem) {
+    public String updateBorrowedItem(ItemTransaction borrowItem) {
       setConnection();
         
         if( conn != null ) {

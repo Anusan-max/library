@@ -9,7 +9,7 @@ package model;
  *
  * @author kailainathan
  */
-public class BorrowItem {
+public class ItemTransaction {
     String borrowId;
     String memberId;
     String itemId;

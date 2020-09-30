@@ -5,22 +5,25 @@
  */
 package forms;
 
-import dao.BorrowItemDao;
+import dao.ItemTransactionDao;
 import dao.ItemDao;
 import dao.TransactionDao;
+import dao.UserDao;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import model.BorrowItem;
+import model.ItemTransaction;
 import model.Item;
 import model.ItemType;
 import model.Language;
+import model.LibraryMember;
 import model.RentType;
 import model.Transaction;
 import model.TransactionType;
-import service.BorrowItemService;
+import service.ItemTransactionService;
 import service.ItemService;
 import service.TransactionService;
+import service.UserService;
 
 /**
  *
@@ -31,14 +34,16 @@ public class MemberForm extends javax.swing.JFrame {
     /**
      * Creates new form MemberForm
      */
-    public final BorrowItemService borrowItemService;
+    public final ItemTransactionService borrowItemService;
     public final ItemService itemService;
     private final TransactionService transactionService;
+    private final UserService userService;
     
     public MemberForm() {
-        borrowItemService = new BorrowItemService(new BorrowItemDao());
+        borrowItemService = new ItemTransactionService(new ItemTransactionDao());
         itemService = new ItemService(new ItemDao());
         transactionService = new TransactionService(new TransactionDao());
+        userService = new UserService(new UserDao());
         initComponents();
         closeAllWindows();
     }
@@ -586,18 +591,25 @@ public class MemberForm extends javax.swing.JFrame {
         String itemCode = itemCodeTxt.getText();
         String memberId = memberIdTxt.getText();
         String borrowDate = ((JTextField)borrowDateTxt.getDateEditor().getUiComponent()).getText();
-        
-        BorrowItem borrowItem = new BorrowItem();
+        LibraryMember libMember = userService.findById(memberId);
+        if(libMember == null) {
+             JOptionPane.showMessageDialog(null, "Member  not found");
+        } else {
+                 
+        ItemTransaction borrowItem = new ItemTransaction();
         borrowItem.setItemId(itemCode);
         borrowItem.setMemberId(memberId);
         borrowItem.setBorrowDate(borrowDate);
         Item item = itemService.findItemById(borrowItem.getItemId());
+       
         String result = "";
+        
+    
 
         if(item != null) {
              borrowItem.setItemType(item.getItemType());
         } else {
-             JOptionPane.showMessageDialog(null, "Item or member Id not found");
+             JOptionPane.showMessageDialog(null, "Item Id not found");
         }
         if(item.getNoOfCopiesToBorrow() > 0) {
            result = borrowItemService.borrowItem(borrowItem);
@@ -612,6 +624,7 @@ public class MemberForm extends javax.swing.JFrame {
          JOptionPane.showMessageDialog(null, result);
             resetInputFields();
         }
+        }
         else 
         {
          JOptionPane.showMessageDialog(null, "Enter valid input");
@@ -625,7 +638,7 @@ public class MemberForm extends javax.swing.JFrame {
         String memberId = rMemberIdTxt.getText();
         String returnDate = ((JTextField)returnDateTxt.getDateEditor().getUiComponent()).getText();
         
-        BorrowItem borrowItem = new BorrowItem();
+        ItemTransaction borrowItem = new ItemTransaction();
         borrowItem.setItemId(itemCode);
         borrowItem.setMemberId(memberId);
         borrowItem.setReturnDate(returnDate);

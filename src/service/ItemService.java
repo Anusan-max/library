@@ -5,7 +5,7 @@
  */
 package service;
 
-import dao.BorrowItemDao;
+import dao.ItemTransactionDao;
 import dao.ItemDao;
 import model.Item;
 import model.ItemType;

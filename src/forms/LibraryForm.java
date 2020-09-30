@@ -5,7 +5,7 @@
  */
 package forms;
 
-import dao.BorrowItemDao;
+import dao.ItemTransactionDao;
 import dao.ItemDao;
 import dao.TransactionDao;
 import dao.UserDao;
@@ -65,7 +65,7 @@ public class LibraryForm extends javax.swing.JFrame {
         userService = new UserService(new UserDao());
         inventoryService = new InventoryService(itemDao);
         transactionService = new TransactionService(new TransactionDao());
-        financeService = new FinanceService(new BorrowItemDao());
+        financeService = new FinanceService(new ItemTransactionDao());
         
     }
 

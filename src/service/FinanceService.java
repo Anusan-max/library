@@ -5,7 +5,7 @@
  */
 package service;
 
-import dao.BorrowItemDao;
+import dao.ItemTransactionDao;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,10 +18,10 @@ import model.FinancialReport;
  * @author kailainathan
  */
 public class FinanceService {
-      BorrowItemDao borrowItemDao;
+      ItemTransactionDao borrowItemDao;
     
       
-      public FinanceService(BorrowItemDao borrowItemDao) {
+      public FinanceService(ItemTransactionDao borrowItemDao) {
         this.borrowItemDao = borrowItemDao;
     }
 
