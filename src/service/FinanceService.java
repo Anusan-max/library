@@ -17,7 +17,7 @@ import model.FinancialReport;
  *
  * @author kailainathan
  */
-public class FinanceService {
+public class FinanceService implements IFinanceService{
       ItemTransactionDao borrowItemDao;
     
       

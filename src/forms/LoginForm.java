@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import model.UserRole;
+import service.IUserService;
 import service.UserService;
 
 /**
@@ -26,7 +27,7 @@ public class LoginForm extends javax.swing.JFrame {
      */
     
     //declare a variable called userService for the UserService class 
-    private final UserService userService;
+    private final IUserService userService;
    
    
     public LoginForm() {

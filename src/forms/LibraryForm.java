@@ -33,6 +33,11 @@ import model.Transaction;
 import model.TransactionType;
 import model.User;
 import service.FinanceService;
+import service.IFinanceService;
+import service.IInventoryService;
+import service.IItemService;
+import service.ITransactionService;
+import service.IUserService;
 import service.InventoryService;
 import service.ItemService;
 import service.TransactionService;
@@ -45,11 +50,11 @@ import service.UserService;
 public class LibraryForm extends javax.swing.JFrame {
     
     // declare services
-    public final ItemService itemService;
-    public final UserService userService;
-    private final InventoryService inventoryService;
-    private final TransactionService transactionService;
-    private final FinanceService financeService;
+    public final IItemService itemService;
+    public final IUserService userService;
+    private final IInventoryService inventoryService;
+    private final ITransactionService transactionService;
+    private final IFinanceService financeService;
 
 
     /**

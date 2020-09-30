@@ -20,6 +20,10 @@ import model.LibraryMember;
 import model.RentType;
 import model.Transaction;
 import model.TransactionType;
+import service.IItemService;
+import service.IItemTransactionService;
+import service.ITransactionService;
+import service.IUserService;
 import service.ItemTransactionService;
 import service.ItemService;
 import service.TransactionService;
@@ -34,10 +38,10 @@ public class MemberForm extends javax.swing.JFrame {
     /**
      * Creates new form MemberForm
      */
-    public final ItemTransactionService borrowItemService;
-    public final ItemService itemService;
-    private final TransactionService transactionService;
-    private final UserService userService;
+    public final IItemTransactionService borrowItemService;
+    public final IItemService itemService;
+    private final ITransactionService transactionService;
+    private final IUserService userService;
     
     public MemberForm() {
         borrowItemService = new ItemTransactionService(new ItemTransactionDao());

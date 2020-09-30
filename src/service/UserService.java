@@ -17,7 +17,7 @@ import model.User;
  *
  * @author kailainathan
  */
-public class UserService {
+public class UserService implements IUserService{
     
     public final UserDao userDao;
     
@@ -35,6 +35,7 @@ public class UserService {
         return userDao.findByType(type);
     }
 
+   
   public String login(String userName, String password) throws SQLException{
          return userDao.login(userName, password);
     }

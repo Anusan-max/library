@@ -14,7 +14,7 @@ import model.Item;
  *
  * @author kailainathan
  */
-public class InventoryService {
+public class InventoryService implements IInventoryService{
         //TODO 2
     ItemDao itemDao;
 
@@ -22,6 +22,7 @@ public class InventoryService {
         this.itemDao = itemDao;
     }
 
+    @Override
     public ArrayList<Item> getInventoryReport() {
         ArrayList<Item> itemList = new ArrayList();
         for(Item item : itemDao.findAllItems()) {

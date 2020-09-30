@@ -13,7 +13,7 @@ import model.Transaction;
  *
  * @author kailainathan
  */
-public class TransactionService {
+public class TransactionService implements ITransactionService{
     
     TransactionDao transactionDao;
     
@@ -21,10 +21,12 @@ public class TransactionService {
         this.transactionDao = transactionDao;
     }
     
+    @Override
     public void addTransaction(Transaction transaction) {
         transactionDao.addTransaction(transaction);
     }
     
+    @Override
     public ArrayList<Transaction> getAllTransaction() {
         return transactionDao.getAllTransaction();
     }

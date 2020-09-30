@@ -23,7 +23,7 @@ import model.ItemType;
  *
  * @author kailainathan
  */
-public class ItemTransactionService {
+public class ItemTransactionService implements IItemTransactionService{
     
       // declare ItemDao
     public final ItemTransactionDao borrowItemDao;
@@ -34,6 +34,7 @@ public class ItemTransactionService {
         this.borrowItemDao = borrowItemDao; 
     }
     
+    @Override
     public String borrowItem(ItemTransaction borrowItem) {
          ArrayList<ItemType> listOfItems = getBorrowedItemTypesForUser(borrowItem.getMemberId());
          BorrowItemDto borrowItemDto = checkAvaliablity(getItemCountMap(listOfItems),borrowItem.getItemType());
@@ -45,6 +46,7 @@ public class ItemTransactionService {
      
     }
     
+    @Override
     public String calculateFineAndReturnItem(ItemTransaction borrowItem) {
        ItemTransaction borrowItemWithFullDetail = getFullDetailsForBorrowItem(borrowItem);
        
