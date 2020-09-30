@@ -146,7 +146,7 @@ public class BorrowItemDao {
                     financialReport.setTotalFine(rs.getInt("TOTALFINE"));
                     resultList.add(financialReport);
                 }
-                System.out.println("list size " + resultList.size());
+                
                  return resultList;
             } catch (SQLException ex) {
                 Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);

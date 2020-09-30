@@ -65,7 +65,7 @@ public class UserDao {
                         member.setMemberStatus(MemberStatus.valueOf(rs.getString("STATUS")));
                         member.setAddress(rs.getString("ADDRESS"));
                         member.setDob(rs.getString("DATEOFBIRTH"));
-                        System.out.println("Member is " + member);
+                        
                     return member;
                     
                   }
@@ -114,7 +114,7 @@ public class UserDao {
                         }
                     }
                   }
-                  System.out.println("memberList " + memberList);
+                  
                   conn.close();
                   return memberList;
                   

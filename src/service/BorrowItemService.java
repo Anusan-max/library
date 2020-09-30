@@ -122,7 +122,7 @@ public class BorrowItemService {
             }
             else {
                 borrowItemDto.setAllowed(false);
-                borrowItemDto.setMessage("Already borrowed more than 2 BOOKS");
+                borrowItemDto.setMessage("Already borrowed  2 BOOKS");
             }
         } else {
              borrowItemDto.setAllowed(true);
@@ -138,7 +138,7 @@ public class BorrowItemService {
             }
             else {
                 borrowItemDto.setAllowed(false);
-                borrowItemDto.setMessage("Already borrowed more than 1 MAGAZINE");
+                borrowItemDto.setMessage("Already borrowed 1 MAGAZINE");
             }
         } else {
             borrowItemDto.setAllowed(true);

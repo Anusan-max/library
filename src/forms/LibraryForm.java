@@ -854,7 +854,7 @@ public class LibraryForm extends javax.swing.JFrame {
         // creating an object for item  
         
         if(validInput()) {
-            Item item = new Item();        
+        Item item = new Item();        
         item.setTitle(title.getText());
         item.setCode(code.getText());
         item.setAuthor(author.getText());
@@ -984,6 +984,8 @@ public class LibraryForm extends javax.swing.JFrame {
             return true;
         }
     }
+    
+    
     private boolean canBorrowItem(Item item) {
         if(item.getItemType()== ItemType.JOURNAL || item.getItemType() == ItemType.NEWSPAPER ) {
          if(item.getRentType() == RentType.BORROW) {

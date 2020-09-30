@@ -34,7 +34,7 @@ public class TransactionDao {
                  stmt.setString(1, transaction.getLocalDate());
                  stmt.setString(2, transaction.getTransactionType().toString());
                  int i = stmt.executeUpdate();
-                 System.out.println("rows added " + i );
+                 
                  conn.close();
              } catch (SQLException ex) {
                  Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
