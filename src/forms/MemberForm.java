@@ -582,7 +582,7 @@ public class MemberForm extends javax.swing.JFrame {
     }//GEN-LAST:event_itemCodeTxtActionPerformed
 
     private void borrowItemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrowItemBtnActionPerformed
-        if(validInput()) {
+        if(validBorrowInput()) {
         String itemCode = itemCodeTxt.getText();
         String memberId = memberIdTxt.getText();
         String borrowDate = ((JTextField)borrowDateTxt.getDateEditor().getUiComponent()).getText();
@@ -610,6 +610,7 @@ public class MemberForm extends javax.swing.JFrame {
             transactionService.addTransaction(new Transaction(TransactionType.BORROW));
         }
          JOptionPane.showMessageDialog(null, result);
+            resetInputFields();
         }
         else 
         {
@@ -619,7 +620,7 @@ public class MemberForm extends javax.swing.JFrame {
     }//GEN-LAST:event_borrowItemBtnActionPerformed
 
     private void returnItemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnItemBtnActionPerformed
-         if(validInput()) {
+         if(validReturnInput()) {
         String itemCode = rItemCodeTxt.getText();
         String memberId = rMemberIdTxt.getText();
         String returnDate = ((JTextField)returnDateTxt.getDateEditor().getUiComponent()).getText();
@@ -640,6 +641,7 @@ public class MemberForm extends javax.swing.JFrame {
         } else {
               JOptionPane.showMessageDialog(null, "Member did not buy this item");
         }
+        resetInputFields();
       }
          else {
              JOptionPane.showMessageDialog(null, "Enter valid input");
@@ -655,7 +657,7 @@ public class MemberForm extends javax.swing.JFrame {
     }//GEN-LAST:event_txtIdActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       if(validInput()) {
+       if(!findByVal.getText().isEmpty()) {
         String selectedFindByType = String.valueOf(findByType.getSelectedItem());
         
         //get the value from the textbox 
@@ -820,12 +822,28 @@ private void closeAllWindows(){
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
-    private boolean validInput() {
-        if(itemCodeTxt.getText().isEmpty() || memberIdTxt.getText().isEmpty()||findByVal.getText().isEmpty()) {
+    private boolean validReturnInput() {
+        if(rItemCodeTxt.getText().isEmpty() || rMemberIdTxt.getText().isEmpty()) {
             return false;
         } else {
             return true;
         }
     }    
+    
+     private boolean validBorrowInput() {
+        if(itemCodeTxt.getText().isEmpty() || memberIdTxt.getText().isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
     }
+     
+     
+    private void resetInputFields()  {
+    rItemCodeTxt.setText("");
+    rMemberIdTxt.setText("");
+    itemCodeTxt.setText("");
+    memberIdTxt.setText("");
+    }
+}
 

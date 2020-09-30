@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import model.UserRole;
 import service.UserService;
 
@@ -112,7 +113,9 @@ public class LoginForm extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
-            
+            if(tUserName.getText().isEmpty() || tPassword.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Enter valid input");
+            } else{
             String username = tUserName.getText();
             String password = tPassword.getText();
             //TODO: validattion 
@@ -129,13 +132,14 @@ public class LoginForm extends javax.swing.JFrame {
                           this.setVisible(false);
             }
             else{
-                    errorMessage.setText(result);
+                    JOptionPane.showMessageDialog(null, "Wrong username or password");
             }
           
-           
+            }
         } catch (SQLException ex) {
             Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
         }
+        resetInputFields();
        
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -143,6 +147,10 @@ public class LoginForm extends javax.swing.JFrame {
         return this;
     }
     
+    private void resetInputFields() {
+            tUserName.setText("");
+            tPassword.setText("");
+    }
     
     /**
      * @param args the command line arguments

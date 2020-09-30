@@ -879,7 +879,7 @@ public class LibraryForm extends javax.swing.JFrame {
               JOptionPane.showMessageDialog(null, result);
               transactionService.addTransaction(new Transaction(TransactionType.ADD));
         }
-           
+           resetinputFields();
         } else 
         {
          JOptionPane.showMessageDialog(null, "Enter valid input");
@@ -1190,6 +1190,27 @@ public class LibraryForm extends javax.swing.JFrame {
         inventoryReportWindow.setVisible(false);
         reportDate.setVisible(false);
     }
+    
+    private void resetinputFields() {
+          txtAuthor.setText("");
+          txtPublisher.setText("");
+          txtTitle.setText("");
+          txtId.setText("");
+          txtIsbn.setText("");
+          txtDate.setText("");
+          txtAvailable.setText("");
+          txtCurrent.setText("");
+         
+          title.setText("");
+        code.setText("");
+        author.setText("");
+        publisher.setText("");
+        isbn.setText("");
+        noOfCopiesToBorrow.setText("");
+
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
