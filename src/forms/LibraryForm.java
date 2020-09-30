@@ -853,7 +853,7 @@ public class LibraryForm extends javax.swing.JFrame {
 
         // creating an object for item  
         
-        if(validInput()) {
+        if(validateAddItemInput()) {
         Item item = new Item();        
         item.setTitle(title.getText());
         item.setCode(code.getText());
@@ -901,11 +901,13 @@ public class LibraryForm extends javax.swing.JFrame {
         
         
         //get the value from the textbox 
-        String selectedValue = findByVal.getText();
-        
+        String findByValueTxt = findByVal.getText();
+        if(findByValueTxt.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please enter a value");
+        } else {
         if(selectedFindByType == "Title") {
         //get item by title
-          Item item = itemService.findItemByTitle(selectedValue);
+          Item item = itemService.findItemByTitle(findByValueTxt);
           if(item == null ) {
               JOptionPane.showMessageDialog(null, "No items found for title");
           }
@@ -924,7 +926,7 @@ public class LibraryForm extends javax.swing.JFrame {
           
         } 
         else {
-             Item item = itemService.findItemById(selectedValue);
+             Item item = itemService.findItemById(findByValueTxt);
           if(item == null ) {
               JOptionPane.showMessageDialog(null, "No items found for Id");
           }
@@ -943,6 +945,7 @@ public class LibraryForm extends javax.swing.JFrame {
                
         }
         transactionService.addTransaction(new Transaction(TransactionType.FIND));
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -952,6 +955,9 @@ public class LibraryForm extends javax.swing.JFrame {
        String txtValue = txtFindMember.getText();
        
        // if combobox selected value is id 
+       if(txtValue.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please enter a value");
+       } else {
        if(selectedSelectMemberBy == "Id"){
            //creating a array list of  LibraryMember
             ArrayList<LibraryMember> list = new ArrayList<LibraryMember>();
@@ -975,14 +981,28 @@ public class LibraryForm extends javax.swing.JFrame {
        }
        
        transactionService.addTransaction(new Transaction(TransactionType.FIND));
+    }
+       
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private boolean validInput() {
-        if(title.getText().isEmpty() || code.getText().isEmpty() || author.getText().isEmpty()) {
+    private boolean validateAddItemInput() {
+        String noOfCopiesAvailable = noOfCopiesToBorrow.getText();
+        if(title.getText().isEmpty() || code.getText().isEmpty() || author.getText().isEmpty() || publisher.getText().isEmpty() || publishedDate.getDateEditor().toString().isEmpty()|| isbn.getText().isEmpty()|| noOfCopiesAvailable.isEmpty() || isNotIntValue(noOfCopiesAvailable)) {
             return false;
+            
         } else {
             return true;
         }
+    }
+    
+    private boolean isNotIntValue(String input) {
+             try {
+                 Integer.parseInt(input);
+                  return false;
+            }
+            catch (Exception e) {
+                       return true;
+            }
     }
     
     
@@ -1068,17 +1088,27 @@ public class LibraryForm extends javax.swing.JFrame {
     }//GEN-LAST:event_cbLanActionPerformed
 
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
+          boolean validQuery = false;
         String selectedReportType = cbReportType.getSelectedItem().toString();
         if(selectedReportType == "Inventory") {
             addInventoryReportTable(inventoryService.getInventoryReport());
+            validQuery = true;
         } else if (selectedReportType == "Transaction") {
-            addTransactionReportTable(transactionService.getAllTransaction());
+                 addTransactionReportTable(transactionService.getAllTransaction());
+                 validQuery = true;
         } else {
-            String date = ((JTextField) reportDate.getDateEditor().getUiComponent()).getText();
-            addFinancialReportTable((HashMap<String, Integer>) financeService.getFinanceReportForDate(date));
+           String date = ((JTextField) reportDate.getDateEditor().getUiComponent()).getText();
+            if(date.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Enter valid input");
+                validQuery = false;
+            }else{
+                addFinancialReportTable((HashMap<String, Integer>) financeService.getFinanceReportForDate(date));
+                validQuery = true;
+            }
         }
-        
-        transactionService.addTransaction(new Transaction(TransactionType.REPORT));
+        if(validQuery) {
+            transactionService.addTransaction(new Transaction(TransactionType.REPORT));
+        }
         
     }//GEN-LAST:event_button1ActionPerformed
 

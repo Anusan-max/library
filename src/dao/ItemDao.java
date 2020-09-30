@@ -90,9 +90,13 @@ public class ItemDao {
                  
                  int i = stmt.executeUpdate();
                  conn.close();
-                 return "Item Added";
+                 if(i == 1) {
+                     return "Item Added";
+                 } 
+                 
              } catch (SQLException ex) {
                  Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
+                 return "Item already exist";
              }
        }
        return null;
