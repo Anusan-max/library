@@ -5,6 +5,7 @@
  */
 package service;
 
+import dao.ItemDao;
 import dao.ItemTransactionDao;
 import dto.BorrowItemDto;
 import java.time.LocalDate;
@@ -26,12 +27,14 @@ import model.ItemType;
 public class ItemTransactionService implements IItemTransactionService{
     
       // declare ItemDao
-    public final ItemTransactionDao borrowItemDao;
+    private final ItemTransactionDao borrowItemDao;
+    private final ItemDao itemDao;
     
    //java constructure  
-    public ItemTransactionService(ItemTransactionDao borrowItemDao) {
+    public ItemTransactionService(ItemTransactionDao borrowItemDao,ItemDao itemDao) {
         // create new ItemDao object and assign it to the ItemDao variable
         this.borrowItemDao = borrowItemDao; 
+        this.itemDao = itemDao;
     }
     
     @Override
@@ -48,16 +51,18 @@ public class ItemTransactionService implements IItemTransactionService{
     
     @Override
     public String calculateFineAndReturnItem(ItemTransaction borrowItem) {
-       ItemTransaction borrowItemWithFullDetail = getFullDetailsForBorrowItem(borrowItem);
-       
-       if(borrowItemWithFullDetail != null) {
-       int daysForFine =  numberOfDaysForFine(borrowItemWithFullDetail.getBorrowDate(),borrowItemWithFullDetail.getReturnDate());
-       String result = applyFine(daysForFine,borrowItemWithFullDetail);
-       borrowItemDao.updateBorrowedItem(borrowItem);
-       return result;
-       } else {
-       return null;
-       }
+      ArrayList<ItemTransaction> borrowItemWithFullDetailList = getFullDetailsForBorrowItem(borrowItem);
+
+        if(borrowItemWithFullDetailList.size() < 1) {
+            return  null;
+        } else {
+            int i = applyFineForAllItems(borrowItemWithFullDetailList);
+            if(i > 0) {
+                return  "Items returned :  fine is RS: " + i;
+            } else {
+                return "Returned : no fine";
+            }
+        }
       
        
     }
@@ -148,7 +153,7 @@ public class ItemTransactionService implements IItemTransactionService{
         return borrowItemDto;
     }
     
-    private ItemTransaction getFullDetailsForBorrowItem(ItemTransaction borrowItem) {
+    private ArrayList<ItemTransaction>  getFullDetailsForBorrowItem(ItemTransaction borrowItem) {
          return borrowItemDao.getBorrowedItem(borrowItem);
     }
     
@@ -171,14 +176,31 @@ public class ItemTransactionService implements IItemTransactionService{
          
     }
     
-    private String applyFine(int daysForFine,ItemTransaction borrowItem) {
+    public int applyFineForAllItems(ArrayList<ItemTransaction> borrowItemWithFullDetailList ) {
+        int i = 0;
+        System.out.println("size is " + borrowItemWithFullDetailList.size());
+        for (ItemTransaction borrowItemWithFullDetail :  borrowItemWithFullDetailList) {
+            if(borrowItemWithFullDetail != null) {
+                int daysForFine = numberOfDaysForFine(borrowItemWithFullDetail.getBorrowDate(), borrowItemWithFullDetail.getReturnDate());
+                i = i +  applyFine(daysForFine, borrowItemWithFullDetail);
+                System.out.println(borrowItemWithFullDetail.getReturnDate() + "Fine for item " + borrowItemWithFullDetail.getTotalFine());
+                System.out.println(i);
+                borrowItemDao.updateBorrowedItem(borrowItemWithFullDetail);
+                itemDao.updateNoOfCopies(borrowItemWithFullDetail.getItemId(),true);
+            }
+        }
+        return i;
+    }
+    
+       private int applyFine(int daysForFine, ItemTransaction borrowItem) {
         if(daysForFine > 0) {
             int i = daysForFine * 20;
               borrowItem.setTotalFine(i);
+              System.out.println("fine item in method" + borrowItem.getTotalFine());
               borrowItem.setPaid(true);
-              return i + "RS - Fine Applied and returned";
+              return i;
         } else {
-        return "returned without Fine" ;
+        return 0;
         }
     }
     

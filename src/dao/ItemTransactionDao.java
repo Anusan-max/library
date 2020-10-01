@@ -55,24 +55,27 @@ public class ItemTransactionDao {
         return null;
     }
 
-    public ItemTransaction getBorrowedItem(ItemTransaction borrowItem) {
+    public ArrayList<ItemTransaction> getBorrowedItem(ItemTransaction borrowItem) {
         setConnection();
          if( conn != null ) {
+             ArrayList<ItemTransaction> borrowItems = new ArrayList<>();
               try {
                   stmt = conn.prepareStatement("select * from BORROWITEM where MEMBERID = ? AND ITEMID = ? AND RETURNDATE IS NULL",ResultSet.TYPE_SCROLL_INSENSITIVE,
                                         ResultSet.CONCUR_UPDATABLE);
                   stmt.setString(1, borrowItem.getMemberId());
                   stmt.setString(2, borrowItem.getItemId());
                   ResultSet rs = stmt.executeQuery();
-                  if (!rs.next()) {
-                      return null;
-                  } else {
-                    rs.first();
-                        borrowItem.setBorrowDate(rs.getString("BORROWDATE"));
-                        borrowItem.setBorrowId(rs.getString("BORROWID"));
-                    conn.close();
-                    return borrowItem;
+                  while (rs.next()) {
+                    ItemTransaction itemTransaction = new ItemTransaction();
+                    itemTransaction.setItemId(borrowItem.getItemId());
+                    itemTransaction.setMemberId(borrowItem.getMemberId());
+                    itemTransaction.setBorrowDate(rs.getString("BORROWDATE"));
+                    itemTransaction.setReturnDate(borrowItem.getReturnDate());
+                    itemTransaction.setBorrowId(rs.getString("BORROWID"));
+                    borrowItems.add(itemTransaction);
                   }
+                  conn.close();
+                  return borrowItems;
               } catch (SQLException ex) {
                   Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
               }
@@ -80,27 +83,22 @@ public class ItemTransactionDao {
          return null;
     }
     
-    public String updateBorrowedItem(ItemTransaction borrowItem) {
+    public void updateBorrowedItem(ItemTransaction borrowItem) {
       setConnection();
-        
+        System.out.println(borrowItem.getReturnDate() + "in dao " + borrowItem.getTotalFine());
         if( conn != null ) {
              try {
-      
-                    
-                 stmt = conn.prepareStatement("UPDATE BORROWITEM SET RETURNDATE = ?,TOTALFINE = ? WHERE MEMBERID = ? AND ITEMID = ? ");
+                 stmt = conn.prepareStatement("UPDATE BORROWITEM SET RETURNDATE = ?,TOTALFINE = ? WHERE BORROWID = ? ");
                  stmt.setString(1, borrowItem.getReturnDate());
                  stmt.setInt(2, borrowItem.getTotalFine());
-                 stmt.setString(3, borrowItem.getMemberId());
-                 stmt.setString(4, borrowItem.getItemId());
+                 stmt.setString(3, borrowItem.getBorrowId());
                  
-                 int i = stmt.executeUpdate();
+                 stmt.executeUpdate();
                  conn.close();
-                 return "Item Returned successfully";
               } catch (SQLException ex) {
                   Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
               }
         }
-        return null;
     }
     
     public ArrayList<ItemType> getBorrowedItemTypesForUser(String userId) {

@@ -44,7 +44,7 @@ public class MemberForm extends javax.swing.JFrame {
     private final IUserService userService;
     
     public MemberForm() {
-        borrowItemService = new ItemTransactionService(new ItemTransactionDao());
+        borrowItemService = new ItemTransactionService(new ItemTransactionDao(),new ItemDao());
         itemService = new ItemService(new ItemDao());
         transactionService = new TransactionService(new TransactionDao());
         userService = new UserService(new UserDao());
@@ -652,7 +652,7 @@ public class MemberForm extends javax.swing.JFrame {
             if(result.contains("Fine Applied and returned")) {
               transactionService.addTransaction(new Transaction(TransactionType.FINE));
             }
-              itemService.updateNoOfCopies(itemCode,true);
+              
               transactionService.addTransaction(new Transaction(TransactionType.RETURN));
               JOptionPane.showMessageDialog(null, result);
         } else {
