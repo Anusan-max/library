@@ -5,6 +5,7 @@
  */
 package forms;
 
+import controller.LoginController;
 import dao.UserDao;
 import databaseconfig.DbConnection;
 import java.sql.SQLException;
@@ -27,12 +28,14 @@ public class LoginForm extends javax.swing.JFrame {
      */
     
     //declare a variable called userService for the UserService class 
+    private final LoginController loginController;
     private final IUserService userService;
    
    
     public LoginForm() {
         
-        userService = new UserService(new UserDao());
+        this.loginController = new LoginController();
+        this.userService = loginController.getUserService();
         initComponents();
     }
 

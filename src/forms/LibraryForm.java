@@ -5,6 +5,7 @@
  */
 package forms;
 
+import controller.MainController;
 import dao.ItemTransactionDao;
 import dao.ItemDao;
 import dao.TransactionDao;
@@ -50,8 +51,8 @@ import service.UserService;
 public class LibraryForm extends javax.swing.JFrame {
     
     // declare services
-    public final IItemService itemService;
-    public final IUserService userService;
+    private final IItemService itemService;
+    private final IUserService userService;
     private final IInventoryService inventoryService;
     private final ITransactionService transactionService;
     private final IFinanceService financeService;
@@ -64,13 +65,13 @@ public class LibraryForm extends javax.swing.JFrame {
         initComponents();
         closeAllWindows();
         
-        // create service objects
-        ItemDao itemDao = new ItemDao();
-        itemService = new ItemService(itemDao);
-        userService = new UserService(new UserDao());
-        inventoryService = new InventoryService(itemDao);
-        transactionService = new TransactionService(new TransactionDao());
-        financeService = new FinanceService(new ItemTransactionDao());
+        MainController mainController = new MainController();
+         
+        itemService = mainController.getItemService();
+        userService = mainController.getUserService();
+        inventoryService = mainController.getInventoryService();
+        transactionService = mainController.getTransactionService();
+        financeService = mainController.getFinanceService();
         
     }
 

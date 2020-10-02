@@ -5,6 +5,7 @@
  */
 package forms;
 
+import controller.MainController;
 import dao.ItemTransactionDao;
 import dao.ItemDao;
 import dao.TransactionDao;
@@ -38,16 +39,20 @@ public class MemberForm extends javax.swing.JFrame {
     /**
      * Creates new form MemberForm
      */
-    public final IItemTransactionService borrowItemService;
+    public final IItemTransactionService itemTransaction;
     public final IItemService itemService;
     private final ITransactionService transactionService;
     private final IUserService userService;
     
     public MemberForm() {
-        borrowItemService = new ItemTransactionService(new ItemTransactionDao(),new ItemDao());
-        itemService = new ItemService(new ItemDao());
-        transactionService = new TransactionService(new TransactionDao());
-        userService = new UserService(new UserDao());
+        
+         MainController mainController = new MainController();
+         
+         
+        itemTransaction = mainController.getItemTransactionService();
+        itemService = mainController.getItemService();
+        transactionService = mainController.getTransactionService();
+        userService = mainController.getUserService();
         initComponents();
         closeAllWindows();
     }
@@ -616,7 +621,7 @@ public class MemberForm extends javax.swing.JFrame {
              JOptionPane.showMessageDialog(null, "Item Id not found");
         }
         if(item.getNoOfCopiesToBorrow() > 0) {
-           result = borrowItemService.borrowItem(borrowItem);
+           result = itemTransaction.borrowItem(borrowItem);
         } else {
          result = "Item not avaliable";
         }
@@ -646,7 +651,7 @@ public class MemberForm extends javax.swing.JFrame {
         borrowItem.setItemId(itemCode);
         borrowItem.setMemberId(memberId);
         borrowItem.setReturnDate(returnDate);
-        String result = borrowItemService.calculateFineAndReturnItem(borrowItem);
+        String result = itemTransaction.calculateFineAndReturnItem(borrowItem);
         
         if ( result != null) {
             if(result.contains("Fine Applied and returned")) {
