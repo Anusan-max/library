@@ -88,7 +88,7 @@ public class ItemTransactionDao {
         System.out.println(borrowItem.getReturnDate() + "in dao " + borrowItem.getTotalFine());
         if( conn != null ) {
              try {
-                 stmt = conn.prepareStatement("UPDATE BORROWITEM SET RETURNDATE = ?,TOTALFINE = ? WHERE BORROWID = ? ");
+                 stmt = conn.prepareStatement("UPDATE BORROWITEM SET RETURNDATE = ?,TOTALFINE = ? WHERE BORROWID = ?");
                  stmt.setString(1, borrowItem.getReturnDate());
                  stmt.setInt(2, borrowItem.getTotalFine());
                  stmt.setString(3, borrowItem.getBorrowId());
@@ -107,7 +107,7 @@ public class ItemTransactionDao {
 
         if( conn != null ) {
             try {
-                stmt = conn.prepareStatement("select ITEMTYPE from BORROWITEM where MEMBERID = ?");
+                stmt = conn.prepareStatement("select ITEMTYPE from BORROWITEM where MEMBERID = ? AND RETURNDATE IS NULL");
                 stmt.setString(1, userId);
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {

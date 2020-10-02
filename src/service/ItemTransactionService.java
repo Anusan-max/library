@@ -40,12 +40,22 @@ public class ItemTransactionService implements IItemTransactionService{
     @Override
     public String borrowItem(ItemTransaction borrowItem) {
          ArrayList<ItemType> listOfItems = getBorrowedItemTypesForUser(borrowItem.getMemberId());
-         BorrowItemDto borrowItemDto = checkAvaliablity(getItemCountMap(listOfItems),borrowItem.getItemType());
+         if(listOfItems != null) {
+              BorrowItemDto borrowItemDto = checkAvaliablity(getItemCountMap(listOfItems),borrowItem.getItemType());
          if(borrowItemDto.isAllowed()) {
                 return borrowItemDao.addBorrowItemToDb(borrowItem);
          }else {
             return borrowItemDto.getMessage();
         }
+        } else {
+             if(typeAllowedToBorrow(borrowItem.getItemType()).isAllowed()) {
+                 return borrowItemDao.addBorrowItemToDb(borrowItem);
+             } else {
+                 return "Item type not allowed";
+             }
+              
+         }
+        
      
     }
     
