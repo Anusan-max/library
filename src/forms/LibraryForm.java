@@ -28,7 +28,7 @@ import model.InventoryReport;
 import model.Item;
 import model.ItemType;
 import model.Language;
-import model.LibraryMember;
+import model.Member;
 import model.MemberType;
 import model.RentType;
 import model.Transaction;
@@ -157,6 +157,7 @@ public class LibraryForm extends javax.swing.JFrame {
         cbReportType = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         reportDate = new com.toedter.calendar.JDateChooser();
+        monthStartWith = new javax.swing.JLabel();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         addItem = new javax.swing.JMenuItem();
@@ -332,7 +333,7 @@ public class LibraryForm extends javax.swing.JFrame {
                     .addComponent(jLabel21))
                 .addGap(18, 18, 18)
                 .addComponent(addItemBtn)
-                .addContainerGap(165, Short.MAX_VALUE))
+                .addContainerGap(215, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -417,7 +418,7 @@ public class LibraryForm extends javax.swing.JFrame {
                     .addComponent(jButton3))
                 .addGap(31, 31, 31)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(208, Short.MAX_VALUE))
+                .addContainerGap(308, Short.MAX_VALUE))
         );
 
         findItemWindow.setClosable(true);
@@ -664,7 +665,7 @@ public class LibraryForm extends javax.swing.JFrame {
                 .addGroup(findItemWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(cbLan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(428, Short.MAX_VALUE))
+                .addContainerGap(528, Short.MAX_VALUE))
         );
 
         jButton2.getAccessibleContext().setAccessibleName("find");
@@ -703,38 +704,46 @@ public class LibraryForm extends javax.swing.JFrame {
 
         jLabel3.setText("Report Type");
 
-        reportDate.setDateFormatString("dd/MM/yyyy");
+        reportDate.setDateFormatString("yyyy-MM-dd");
+
+        monthStartWith.setText("Month start with");
 
         javax.swing.GroupLayout inventoryReportWindowLayout = new javax.swing.GroupLayout(inventoryReportWindow.getContentPane());
         inventoryReportWindow.getContentPane().setLayout(inventoryReportWindowLayout);
         inventoryReportWindowLayout.setHorizontalGroup(
             inventoryReportWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inventoryReportWindowLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cbReportType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(reportDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
-                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inventoryReportWindowLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inventoryReportWindowLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(inventoryReportWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(inventoryReportWindowLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cbReportType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(55, 55, 55)
+                        .addComponent(monthStartWith)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(reportDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(inventoryReportWindowLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(41, 41, 41))
         );
         inventoryReportWindowLayout.setVerticalGroup(
             inventoryReportWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(inventoryReportWindowLayout.createSequentialGroup()
-                .addGap(38, 38, 38)
+                .addGap(42, 42, 42)
                 .addGroup(inventoryReportWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(reportDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(inventoryReportWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(inventoryReportWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbReportType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(inventoryReportWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cbReportType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)
+                        .addComponent(monthStartWith)))
+                .addGap(19, 19, 19)
+                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(205, 205, 205))
         );
@@ -815,7 +824,7 @@ public class LibraryForm extends javax.swing.JFrame {
                 .addComponent(findItemWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(41, 41, 41)
                 .addComponent(findMemberWindow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 4005, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 3877, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(257, 257, 257))
         );
@@ -967,9 +976,9 @@ public class LibraryForm extends javax.swing.JFrame {
        } else {
        if(selectedSelectMemberBy == "Id"){
            //creating a array list of  LibraryMember
-            ArrayList<LibraryMember> list = new ArrayList<LibraryMember>();
+            ArrayList<Member> list = new ArrayList<Member>();
              // getting the librarymember and adding it to the list 
-             LibraryMember member = userService.findById(txtValue);
+             Member member = userService.findById(txtValue);
              
              if(member != null) {
                     list.add(member);
@@ -1034,7 +1043,7 @@ public class LibraryForm extends javax.swing.JFrame {
     return false;
 }
     
-    private void addToTable(ArrayList<LibraryMember> list) {
+    private void addToTable(ArrayList<Member> list) {
             DefaultTableModel model =  (DefaultTableModel) jTable1.getModel();
             model.setRowCount(0);
 
@@ -1129,8 +1138,10 @@ public class LibraryForm extends javax.swing.JFrame {
         String selectedReportType = cbReportType.getSelectedItem().toString();
          if(selectedReportType == "Finance") { 
              reportDate.setVisible(true);
+             monthStartWith.setVisible(true);
          } else {
          reportDate.setVisible(false);
+         monthStartWith.setVisible(false);
          }
     }//GEN-LAST:event_cbReportTypeActionPerformed
 
@@ -1196,6 +1207,7 @@ public class LibraryForm extends javax.swing.JFrame {
         findMemberWindow.setVisible(false);
         inventoryReportWindow.setVisible(false);
         reportDate.setVisible(false);
+        monthStartWith.setVisible(false);
     }
     
     private void resetinputFields() {
@@ -1324,6 +1336,7 @@ public class LibraryForm extends javax.swing.JFrame {
     private javax.swing.JLabel jTitle;
     private javax.swing.JLabel lFindBy;
     private javax.swing.JComboBox<String> language;
+    private javax.swing.JLabel monthStartWith;
     private javax.swing.JTextField noOfCopiesToBorrow;
     private com.toedter.calendar.JDateChooser publishedDate;
     private javax.swing.JTextField publisher;

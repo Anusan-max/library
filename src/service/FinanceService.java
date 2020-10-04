@@ -39,8 +39,6 @@ private Map<String,Integer> calculateTotalPerItem(List<FinancialReport> borrowIt
  
     private Map<String,Integer> groupItemAndGetTotal(List<FinancialReport> list) {
         for (FinancialReport r : list ) {
-            System.out.println("mem " + r.getMemberId());
-            System.out.println("fine " + r.getTotalFine());
         }
         return list.stream()
                 .collect(groupingBy(FinancialReport::getMemberId,

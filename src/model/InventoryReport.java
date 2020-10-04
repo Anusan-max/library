@@ -11,6 +11,10 @@ package model;
  */
 public class InventoryReport {
 
+   private String itemTitle;
+   private String itemCode;
+   private int noOfCopies;
+   
     public String getItemTitle() {
         return itemTitle;
     }
@@ -34,9 +38,7 @@ public class InventoryReport {
     public void setNoOfCopies(int noOfCopies) {
         this.noOfCopies = noOfCopies;
     }
-   private String itemTitle;
-   private String itemCode;
-   private int noOfCopies;
+ 
     
     
 }

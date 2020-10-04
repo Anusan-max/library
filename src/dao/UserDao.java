@@ -17,7 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Item;
 import model.Language;
-import model.LibraryMember;
+import model.Member;
 import model.RentType;
 import model.User;
 import model.UserRole;
@@ -35,7 +35,7 @@ public class UserDao {
       
     
 
-    public LibraryMember findById(String id) {
+    public Member findById(String id) {
         try {
               conn = DbConnection.getConnection();
           } catch (SQLException ex) {
@@ -59,7 +59,7 @@ public class UserDao {
                       return null;
                   } else {
                     if(UserRole.valueOf(rs.getString("UROLE")) == UserRole.MEMBER) {
-                        LibraryMember member = new LibraryMember();
+                        Member member = new Member();
                         member.setName(rs.getString("NAME"));
                         member.setContactNo(rs.getString("CONTACTNO"));
                         member.setMemberStatus(MemberStatus.valueOf(rs.getString("STATUS")));
@@ -80,7 +80,7 @@ public class UserDao {
     }
     
     
-      public ArrayList<LibraryMember> findByType(String type) {
+      public ArrayList<Member> findByType(String type) {
           ArrayList memberList = new ArrayList();
         try {
               conn = DbConnection.getConnection();
@@ -99,17 +99,13 @@ public class UserDao {
                   //if no results found 
                   while (rs.next()) { 
                       if(UserRole.valueOf(rs.getString("UROLE")) == UserRole.MEMBER) {
-                        LibraryMember member = new LibraryMember();
+                        Member member = new Member();
                         member.setName(rs.getString("NAME"));
                         member.setContactNo(rs.getString("CONTACTNO"));
                         member.setMemberStatus(MemberStatus.valueOf(rs.getString("STATUS")));
                         member.setAddress(rs.getString("ADDRESS"));
                         member.setDob(rs.getString("DATEOFBIRTH"));
-                        System.out.println("member.getMemberType() " + member.getMemberType());
-                        System.out.println("type paras" + type);
-                        System.out.println("thisis " + (member.getMemberType().toString() == type));
                         if(member.getMemberType() == MemberType.valueOf(type)) {
-                             System.out.println(" inside the if  " + member.getMemberType());
                              memberList.add(member);
                         }
                     }

@@ -15,7 +15,7 @@ import model.Transaction;
  */
 public class TransactionService implements ITransactionService{
     
-    TransactionDao transactionDao;
+    private TransactionDao transactionDao;
     
     public TransactionService(TransactionDao transactionDao) {
         this.transactionDao = transactionDao;

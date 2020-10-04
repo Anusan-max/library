@@ -17,7 +17,7 @@ import model.Item;
  */
 public class InventoryService implements IInventoryService{
         //TODO 2
-    ItemDao itemDao;
+    private ItemDao itemDao;
 
     public InventoryService(ItemDao itemDao) {
         this.itemDao = itemDao;
@@ -28,9 +28,6 @@ public class InventoryService implements IInventoryService{
         ArrayList<InventoryReport> itemList = new ArrayList();
         for(InventoryReport inventoryReport : itemDao.findAllItemsForReport()) {
             itemList.add(inventoryReport);
-            System.out.println("I " + inventoryReport.getItemCode());
-            System.out.println("I " + inventoryReport.getItemTitle());
-            System.out.println("I " + inventoryReport.getNoOfCopies());
         }
         return itemList;
     }

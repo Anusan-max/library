@@ -9,11 +9,11 @@ package dto;
  *
  * @author kailainathan
  */
-public class BorrowItemDto {
+public class ItemTransactionDto {
     private boolean allowed;
     private String message;
     
-    public BorrowItemDto(boolean allowed) {
+    public ItemTransactionDto(boolean allowed) {
         this.allowed = allowed;
     }
 

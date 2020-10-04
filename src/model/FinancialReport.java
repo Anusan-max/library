@@ -10,8 +10,8 @@ package model;
  * @author kailainathan
  */
 public class FinancialReport {
-    String memberId;
-    int totalFine;
+    private String memberId;
+    private int totalFine;
 
     public String getMemberId() {
         return memberId;

@@ -17,7 +17,7 @@ import model.ItemTransaction;
 import model.Item;
 import model.ItemType;
 import model.Language;
-import model.LibraryMember;
+import model.Member;
 import model.RentType;
 import model.Transaction;
 import model.TransactionType;
@@ -600,7 +600,7 @@ public class MemberForm extends javax.swing.JFrame {
         String itemCode = itemCodeTxt.getText();
         String memberId = memberIdTxt.getText();
         String borrowDate = ((JTextField)borrowDateTxt.getDateEditor().getUiComponent()).getText();
-        LibraryMember libMember = userService.findById(memberId);
+        Member libMember = userService.findById(memberId);
         if(libMember == null) {
              JOptionPane.showMessageDialog(null, "Member  not found");
         } else {
@@ -617,14 +617,16 @@ public class MemberForm extends javax.swing.JFrame {
 
         if(item != null) {
              borrowItem.setItemType(item.getItemType());
-        } else {
-             JOptionPane.showMessageDialog(null, "Item Id not found");
-        }
-        if(item.getNoOfCopiesToBorrow() > 0) {
+             
+         if(item.getNoOfCopiesToBorrow() > 0) {
            result = itemTransaction.borrowItem(borrowItem);
         } else {
          result = "Item not avaliable";
         }
+        } else {
+             result =  "Item Id not found";
+        }
+      
         
         if( result == "Item Borrowed successfully") {
             itemService.updateNoOfCopies(itemCode,false);

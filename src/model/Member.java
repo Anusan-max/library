@@ -14,12 +14,12 @@ import java.util.ArrayList;
  *
  * @author kailainathan
  */
-public class LibraryMember extends User{
+public class Member extends User{
     
-     String dob;
-     String address;
-     String contactNo;
-     MemberStatus memberStatus;
+    private String dob;
+    private String address;
+    private  String contactNo;
+    private  MemberStatus memberStatus;
 
     public String getDob() {
         return dob;

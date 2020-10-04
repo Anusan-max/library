@@ -23,7 +23,7 @@ import model.TransactionType;
 public class TransactionDao {
     
        private static PreparedStatement stmt = null;
-      Connection conn = null;
+       private Connection conn = null;
 
     public void addTransaction(Transaction transaction) {
         setConnection();

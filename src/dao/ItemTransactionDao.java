@@ -10,16 +10,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.ItemTransaction;
 import model.FinancialReport;
-import model.Item;
 import model.ItemType;
-import model.Language;
-import model.RentType;
+
 
 /**
  *
@@ -27,11 +30,11 @@ import model.RentType;
  */
 public class ItemTransactionDao {
      private static PreparedStatement stmt = null;
-     Connection conn = null;
+     private Connection conn = null;
       
-    public String addBorrowItemToDb(ItemTransaction borrowItem){
+    public String addBorrowItemToDb(ItemTransaction borrowItem) {
          setConnection();
-       
+             
        if( conn != null ) {
              try {
                  stmt = conn.prepareStatement("INSERT INTO BORROWITEM(MEMBERID, ITEMID, BORROWDATE, RETURNDATE, PAID,TOTALFINE,ITEMTYPE) values(?, ?, ?, ?, ?,?,?)");
@@ -85,13 +88,30 @@ public class ItemTransactionDao {
     
     public void updateBorrowedItem(ItemTransaction borrowItem) {
       setConnection();
-        System.out.println(borrowItem.getReturnDate() + "in dao " + borrowItem.getTotalFine());
+      
+    java.util.Date initDate = null;
+    String parsedDate = null;
+    
+    
+         try {
+             initDate = new SimpleDateFormat("dd/MM/yyyy").parse(borrowItem.getReturnDate());
+             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+             parsedDate = formatter.format(initDate);
+         } catch (ParseException ex) {
+             Logger.getLogger(ItemTransactionDao.class.getName()).log(Level.SEVERE, null, ex);
+         }
+   
+           
+       Date cDate = Date.valueOf(parsedDate);
+       
         if( conn != null ) {
              try {
-                 stmt = conn.prepareStatement("UPDATE BORROWITEM SET RETURNDATE = ?,TOTALFINE = ? WHERE BORROWID = ?");
+                 stmt = conn.prepareStatement("UPDATE BORROWITEM SET RETURNDATE = ?,TOTALFINE = ? , CDATE = ? WHERE BORROWID = ?");
                  stmt.setString(1, borrowItem.getReturnDate());
                  stmt.setInt(2, borrowItem.getTotalFine());
-                 stmt.setString(3, borrowItem.getBorrowId());
+                 stmt.setDate(3, cDate);
+                 stmt.setString(4, borrowItem.getBorrowId());
+                 
                  
                  stmt.executeUpdate();
                  conn.close();
@@ -117,7 +137,6 @@ public class ItemTransactionDao {
                     }
                    
                 }
-                System.out.println("db array size " + resultString.size() );
                  return resultString;
             } catch (SQLException ex) {
                 Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -128,15 +147,28 @@ public class ItemTransactionDao {
     
     
 
-    public List<FinancialReport> getAllBorrowItemsPerDate(String reportDate) {
+    public List<FinancialReport> getAllBorrowItemsPerDate(String reportDate)  {
           setConnection();
+          
+         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+         LocalDate fromDate = LocalDate.parse(reportDate,dtf);
+         String toDateString = fromDate.plusMonths(1).format(dtf);
+         
+         Date sFromDate = Date.valueOf(reportDate);
+         Date sToDate = Date.valueOf(toDateString);
+        
+ 
+
+          
+          
         ArrayList<FinancialReport> resultList = new ArrayList<>();
 
         if( conn != null ) {
             try {
-                System.out.println(" datre is " + reportDate);
-                stmt = conn.prepareStatement("select MEMBERID,TOTALFINE from BORROWITEM where RETURNDATE = ?");
-                stmt.setString(1, reportDate);
+                stmt = conn.prepareStatement("select MEMBERID,TOTALFINE from BORROWITEM where CDATE BETWEEN ? AND ?");
+                stmt.setDate(1, sFromDate);
+                stmt.setDate(2, sToDate);
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
                     FinancialReport financialReport = new FinancialReport();

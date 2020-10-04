@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Item;
-import model.LibraryMember;
+import model.Member;
 import model.User;
 
 /**
@@ -19,7 +19,7 @@ import model.User;
  */
 public class UserService implements IUserService{
     
-    public final UserDao userDao;
+    private final UserDao userDao;
     
      public UserService(UserDao userDao) {
         this.userDao = userDao; 
@@ -27,11 +27,11 @@ public class UserService implements IUserService{
 
     // findById method needs a string as a parameter 
     // return a member object
-    public LibraryMember findById(String id) {
+    public Member findById(String id) {
         return userDao.findById(id);
     }
     
-     public ArrayList<LibraryMember> findByType(String type) {
+     public ArrayList<Member> findByType(String type) {
         return userDao.findByType(type);
     }
 

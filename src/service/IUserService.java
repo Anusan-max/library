@@ -7,14 +7,14 @@ package service;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import model.LibraryMember;
+import model.Member;
 
 /**
  *
  * @author kailainathan
  */
 public interface IUserService {
-    public LibraryMember findById(String id);
-    public ArrayList<LibraryMember> findByType(String type);
+    public Member findById(String id);
+    public ArrayList<Member> findByType(String type);
     public String login(String userName, String password)  throws SQLException;
 }

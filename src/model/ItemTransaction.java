@@ -10,13 +10,13 @@ package model;
  * @author kailainathan
  */
 public class ItemTransaction {
-    String borrowId;
-    String memberId;
-    String itemId;
-    String borrowDate;
-    String returnDate;
-    int totalFine;
-    ItemType itemType;
+    private String borrowId;
+    private String memberId;
+    private String itemId;
+    private String borrowDate;
+    private String returnDate;
+    private int totalFine;
+    private ItemType itemType;
 
     public ItemType getItemType() {
         return itemType;

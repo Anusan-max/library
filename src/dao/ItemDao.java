@@ -27,7 +27,7 @@ import model.RentType;
  */
 public class ItemDao {
       private static PreparedStatement stmt = null;
-      Connection conn = null;
+      private Connection conn = null;
     
     public void updateNoOfCopies(String itemCode,boolean itemReturn) {
         setConnection();

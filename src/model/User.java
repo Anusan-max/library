@@ -12,11 +12,11 @@ import java.time.LocalDate;
  * @author kailainathan
  */
 public class User {
-    String userId;
-    String name;
-    String userName;
-    String password;
-    UserRole userRole;
+   private String userId;
+   private String name;
+   private  String userName;
+   private  String password;
+   private  UserRole userRole;
    
 
     public String getUserId() {

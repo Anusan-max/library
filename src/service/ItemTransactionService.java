@@ -7,7 +7,7 @@ package service;
 
 import dao.ItemDao;
 import dao.ItemTransactionDao;
-import dto.BorrowItemDto;
+import dto.ItemTransactionDto;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -41,7 +41,7 @@ public class ItemTransactionService implements IItemTransactionService{
     public String borrowItem(ItemTransaction borrowItem) {
          ArrayList<ItemType> listOfItems = getBorrowedItemTypesForUser(borrowItem.getMemberId());
          if(listOfItems != null) {
-              BorrowItemDto borrowItemDto = checkAvaliablity(getItemCountMap(listOfItems),borrowItem.getItemType());
+              ItemTransactionDto borrowItemDto = checkAvaliablity(getItemCountMap(listOfItems),borrowItem.getItemType());
          if(borrowItemDto.isAllowed()) {
                 return borrowItemDao.addBorrowItemToDb(borrowItem);
          }else {
@@ -77,12 +77,12 @@ public class ItemTransactionService implements IItemTransactionService{
        
     }
     
-     public BorrowItemDto checkAvaliablity(HashMap<ItemType, Integer> itemCount, ItemType itemType) {
-         BorrowItemDto borrowItemDto = new BorrowItemDto(false);
+     public ItemTransactionDto checkAvaliablity(HashMap<ItemType, Integer> itemCount, ItemType itemType) {
+         ItemTransactionDto borrowItemDto = new ItemTransactionDto(false);
          
-         BorrowItemDto bookAllowed = isBookAllowed(itemCount,itemType);
-         BorrowItemDto magazineAllowed =  isMagazineAllowed(itemCount,itemType);
-         BorrowItemDto typeAllowed = typeAllowedToBorrow(itemType);
+         ItemTransactionDto bookAllowed = isBookAllowed(itemCount,itemType);
+         ItemTransactionDto magazineAllowed =  isMagazineAllowed(itemCount,itemType);
+         ItemTransactionDto typeAllowed = typeAllowedToBorrow(itemType);
          
          if(bookAllowed.isAllowed() && magazineAllowed.isAllowed() && typeAllowed.isAllowed()) {
              borrowItemDto.setAllowed(true);
@@ -116,8 +116,8 @@ public class ItemTransactionService implements IItemTransactionService{
         return userItemMap;
     }
     
-    private BorrowItemDto typeAllowedToBorrow(ItemType itemType) {
-        BorrowItemDto borrowItemDto = new BorrowItemDto(false);
+    private ItemTransactionDto typeAllowedToBorrow(ItemType itemType) {
+        ItemTransactionDto borrowItemDto = new ItemTransactionDto(false);
         
 
         if(itemType == ItemType.NEWSPAPER || itemType == ItemType.JOURNAL) {
@@ -130,8 +130,8 @@ public class ItemTransactionService implements IItemTransactionService{
         return borrowItemDto;
     }
     
-     private BorrowItemDto isBookAllowed(HashMap<ItemType, Integer> itemCountMap, ItemType itemType) {
-        BorrowItemDto borrowItemDto = new BorrowItemDto(false);
+     private ItemTransactionDto isBookAllowed(HashMap<ItemType, Integer> itemCountMap, ItemType itemType) {
+        ItemTransactionDto borrowItemDto = new ItemTransactionDto(false);
         
         if(itemCountMap.containsKey(ItemType.BOOKS) && itemType == ItemType.BOOKS) {
             if(itemCountMap.get(itemType) < 2) {
@@ -147,8 +147,8 @@ public class ItemTransactionService implements IItemTransactionService{
         return borrowItemDto;
     }
      
-      private BorrowItemDto isMagazineAllowed(HashMap<ItemType, Integer> itemCountMap, ItemType itemType) {
-          BorrowItemDto borrowItemDto = new BorrowItemDto(false);
+      private ItemTransactionDto isMagazineAllowed(HashMap<ItemType, Integer> itemCountMap, ItemType itemType) {
+          ItemTransactionDto borrowItemDto = new ItemTransactionDto(false);
         if(itemCountMap.containsKey(ItemType.MAGAZINE) && itemType == ItemType.MAGAZINE) {
             if(itemCountMap.get(itemType) < 1) {
                  borrowItemDto.setAllowed(true);
@@ -173,28 +173,23 @@ public class ItemTransactionService implements IItemTransactionService{
          LocalDate userReturnDate = LocalDate.parse(returnDate,formatter);
         // int days = Period.between(userReturnDate, borrowDateFromDb,PeriodUnits.Days).getDays();
          long days =borrowDateFromDb.until(userReturnDate,ChronoUnit.DAYS);
-         System.out.println("borrow " + borrowDateFromDb);
-          System.out.println("return " + userReturnDate);
-         System.out.println("sdfsdf " + days);
          int daysForFine = 0;
          
          if(days > 14) {
          daysForFine = (int) (days - 14);
          } 
-         System.out.println("days are " + daysForFine);
          return daysForFine;
          
     }
     
     public int applyFineForAllItems(ArrayList<ItemTransaction> borrowItemWithFullDetailList ) {
         int i = 0;
-        System.out.println("size is " + borrowItemWithFullDetailList.size());
+        
         for (ItemTransaction borrowItemWithFullDetail :  borrowItemWithFullDetailList) {
             if(borrowItemWithFullDetail != null) {
                 int daysForFine = numberOfDaysForFine(borrowItemWithFullDetail.getBorrowDate(), borrowItemWithFullDetail.getReturnDate());
                 i = i +  applyFine(daysForFine, borrowItemWithFullDetail);
-                System.out.println(borrowItemWithFullDetail.getReturnDate() + "Fine for item " + borrowItemWithFullDetail.getTotalFine());
-                System.out.println(i);
+                
                 borrowItemDao.updateBorrowedItem(borrowItemWithFullDetail);
                 itemDao.updateNoOfCopies(borrowItemWithFullDetail.getItemId(),true);
             }
@@ -206,7 +201,7 @@ public class ItemTransactionService implements IItemTransactionService{
         if(daysForFine > 0) {
             int i = daysForFine * 20;
               borrowItem.setTotalFine(i);
-              System.out.println("fine item in method" + borrowItem.getTotalFine());
+              
               borrowItem.setPaid(true);
               return i;
         } else {
