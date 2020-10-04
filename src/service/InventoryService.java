@@ -8,6 +8,7 @@ package service;
 import dao.ItemDao;
 import java.util.ArrayList;
 import java.util.List;
+import model.InventoryReport;
 import model.Item;
 
 /**
@@ -23,13 +24,13 @@ public class InventoryService implements IInventoryService{
     }
 
     @Override
-    public ArrayList<Item> getInventoryReport() {
-        ArrayList<Item> itemList = new ArrayList();
-        for(Item item : itemDao.findAllItems()) {
-            itemList.add(item);
-            System.out.println("I " + item.getCode());
-            System.out.println("I " + item.getTitle());
-            System.out.println("I " + item.getNoOfCopiesToBorrow());
+    public ArrayList<InventoryReport> getInventoryReport() {
+        ArrayList<InventoryReport> itemList = new ArrayList();
+        for(InventoryReport inventoryReport : itemDao.findAllItemsForReport()) {
+            itemList.add(inventoryReport);
+            System.out.println("I " + inventoryReport.getItemCode());
+            System.out.println("I " + inventoryReport.getItemTitle());
+            System.out.println("I " + inventoryReport.getNoOfCopies());
         }
         return itemList;
     }

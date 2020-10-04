@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.InventoryReport;
 import model.Item;
 import model.ItemType;
 import model.Language;
@@ -218,6 +219,29 @@ public class ItemDao {
                     resultString.add(item);
                 }
                  return resultString;
+            } catch (SQLException ex) {
+                Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
+    }
+     
+    public ArrayList<InventoryReport> findAllItemsForReport() {
+        setConnection();
+        ArrayList<InventoryReport> result = new ArrayList<>();
+
+        if( conn != null ) {
+            try {
+                stmt = conn.prepareStatement("select * from ITEM");
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    InventoryReport inventoryReport = new InventoryReport();
+                    inventoryReport.setItemCode(rs.getString("ID"));
+                    inventoryReport.setItemTitle(rs.getString("TITLE"));
+                    inventoryReport.setNoOfCopies(Integer.parseInt(rs.getString("NOOFCOPIESAVAILABLE")));
+                    result.add(inventoryReport);
+                }
+                 return result;
             } catch (SQLException ex) {
                 Logger.getLogger(ItemDao.class.getName()).log(Level.SEVERE, null, ex);
             }

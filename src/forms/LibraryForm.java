@@ -24,6 +24,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import static jdk.nashorn.internal.objects.NativeArray.map;
+import model.InventoryReport;
 import model.Item;
 import model.ItemType;
 import model.Language;
@@ -1134,7 +1135,7 @@ public class LibraryForm extends javax.swing.JFrame {
     }//GEN-LAST:event_cbReportTypeActionPerformed
 
     
-    private void addInventoryReportTable(ArrayList<Item> itemList) {        
+    private void addInventoryReportTable(ArrayList<InventoryReport> itemList) {        
          DefaultTableModel model =  (DefaultTableModel) reportTable.getModel();
             model.setRowCount(0);
             model.setColumnCount(3);
@@ -1143,11 +1144,11 @@ public class LibraryForm extends javax.swing.JFrame {
     reportTable.getColumnModel().getColumn(2).setHeaderValue("Avilable copies");
     reportTable.getTableHeader().resizeAndRepaint();
             Object rowData[] = new Object[3];
-                        for(int i = 0; i < itemList.size(); i++)
+            for(int i = 0; i < itemList.size(); i++)
             {
-                rowData[0] = itemList.get(i).getCode();
-                rowData[1] = itemList.get(i).getTitle();
-                rowData[2] = itemList.get(i).getNoOfCopiesToBorrow();
+                rowData[0] = itemList.get(i).getItemCode();
+                rowData[1] = itemList.get(i).getItemTitle();
+                rowData[2] = itemList.get(i).getNoOfCopies();
                 model.addRow(rowData);
                  
             }
@@ -1162,7 +1163,7 @@ public class LibraryForm extends javax.swing.JFrame {
     reportTable.getTableHeader().resizeAndRepaint();
     
             Object rowData[] = new Object[3];
-                        for(int i = 0; i < itemList.size(); i++)
+            for(int i = 0; i < itemList.size(); i++)
             {
                 rowData[0] = itemList.get(i).getTransactionType();
                 rowData[1] = itemList.get(i).getLocalDate();

@@ -6,6 +6,7 @@
 package service;
 
 import java.util.ArrayList;
+import model.InventoryReport;
 import model.Item;
 
 /**
@@ -13,5 +14,5 @@ import model.Item;
  * @author kailainathan
  */
 public interface IInventoryService {
-    public ArrayList<Item> getInventoryReport();
+    public ArrayList<InventoryReport> getInventoryReport();
 }
